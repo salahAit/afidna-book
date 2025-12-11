@@ -1,0 +1,326 @@
+\chapter{Introduction}\label{introduction}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{1.1 What We're Building}\label{what-were-building}
+
+Welcome to this comprehensive guide on building a modern educational
+platform from scratch. Throughout this book, we'll create
+\textbf{Afidna} --- a fully-featured learning management system (LMS)
+designed for Islamic scholarly content.
+
+By the end of this journey, you'll have built:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{A content delivery system} with hierarchical organization
+  (Tracks → Series → Lessons → Videos)
+\item
+  \textbf{User authentication} with secure session management
+\item
+  \textbf{Progress tracking} that saves watch time and quiz scores
+\item
+  \textbf{An interactive quiz system} with instant feedback
+\item
+  \textbf{A video player} integrated with YouTube's API
+\item
+  \textbf{An admin panel} for content management
+\item
+  \textbf{A global search} across all content
+\item
+  \textbf{A responsive UI} supporting both LTR and RTL languages
+\end{itemize}
+
+This isn't a toy project or a simple tutorial app. We're building
+production-ready software that can serve thousands of users.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{1.2 Why This Tech Stack?}\label{why-this-tech-stack}
+
+\subsection{The Traditional Approach (and Its
+Problems)}\label{the-traditional-approach-and-its-problems}
+
+Many educational platforms are built with: - \textbf{Python/Django} or
+\textbf{Node/Express} for the backend - \textbf{React} or \textbf{Vue}
+for the frontend - \textbf{PostgreSQL} or \textbf{MySQL} for the
+database - \textbf{Redis} for sessions - \textbf{Nginx} for reverse
+proxy
+
+This stack works, but it comes with complexity: - Multiple services to
+manage - High memory footprint - Complex deployment - Expensive hosting
+
+\subsection{Our Modern Approach}\label{our-modern-approach}
+
+We're taking a different path --- the \textbf{``Compact Monolith''}
+philosophy:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3929}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4286}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1786}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Component
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Our Choice
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Why
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Runtime} & Bun & 4x faster than Node.js, built-in bundler,
+native TypeScript \\
+\textbf{Framework} & SvelteKit & SSR + SPA in one, excellent DX, small
+bundle size \\
+\textbf{Database} & SQLite & Zero configuration, single file,
+surprisingly capable \\
+\textbf{ORM} & Drizzle & Type-safe, lightweight, great SQLite support \\
+\textbf{UI} & DaisyUI + Tailwind & Beautiful components, rapid
+development \\
+\textbf{Auth} & Session-based & Simple, secure, no JWT complexity \\
+\end{longtable}
+
+\subsection{The Result}\label{the-result}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Single process} to deploy
+\item
+  \textbf{\textless{} 100MB RAM} in production
+\item
+  \textbf{Sub-millisecond} database queries
+\item
+  \textbf{\$5/month} VPS is more than enough
+\item
+  \textbf{Full-stack TypeScript} --- same language everywhere
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{1.3 Prerequisites}\label{prerequisites}
+
+Before diving in, make sure you have:
+
+\subsection{Technical Knowledge}\label{technical-knowledge}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{JavaScript/TypeScript}: Comfortable with modern ES6+ syntax
+\item
+  \textbf{HTML/CSS}: Basic understanding of web markup
+\item
+  \textbf{Command Line}: Comfortable with terminal basics
+\item
+  \textbf{Git}: Basic version control knowledge
+\end{itemize}
+
+\subsection{Not Required (We'll Cover
+These)}\label{not-required-well-cover-these}
+
+\begin{itemize}
+\tightlist
+\item
+  Svelte/SvelteKit experience
+\item
+  SQLite knowledge
+\item
+  Backend development experience
+\item
+  DevOps skills
+\end{itemize}
+
+\subsection{Software Requirements}\label{software-requirements}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Operating System}: Linux, macOS, or Windows (WSL recommended)
+\item
+  \textbf{Node.js}: Version 18+ (for some tooling)
+\item
+  \textbf{Bun}: We'll install this together
+\item
+  \textbf{Code Editor}: VS Code or Cursor recommended
+\item
+  \textbf{Git}: For version control
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{1.4 Project Overview}\label{project-overview}
+
+\subsection{High-Level Architecture}\label{high-level-architecture}
+
+\begin{lstlisting}
+┌─────────────────────────────────────────────────────────┐
+│                      Client (Browser)                    │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+│  │  Homepage   │  │   Lessons   │  │    Admin    │     │
+│  └─────────────┘  └─────────────┘  └─────────────┘     │
+└─────────────────────────┬───────────────────────────────┘
+                          │ HTTP/HTTPS
+┌─────────────────────────┴───────────────────────────────┐
+│                    SvelteKit Server                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+│  │    Pages    │  │     API     │  │    Auth     │     │
+│  │   (SSR)     │  │  Endpoints  │  │  Middleware │     │
+│  └─────────────┘  └─────────────┘  └─────────────┘     │
+│                          │                               │
+│  ┌───────────────────────┴────────────────────────┐    │
+│  │                 Drizzle ORM                     │    │
+│  └───────────────────────┬────────────────────────┘    │
+└──────────────────────────┼──────────────────────────────┘
+                           │
+      ┌────────────────────┴────────────────────┐
+      │                                          │
+┌─────┴─────┐                            ┌──────┴──────┐
+│ users.db  │                            │ content.db  │
+│ (R/W)     │                            │ (Read-Only) │
+│           │                            │             │
+│ • users   │                            │ • tracks    │
+│ • sessions│                            │ • series    │
+│ • progress│                            │ • lessons   │
+└───────────┘                            │ • videos    │
+                                         └─────────────┘
+\end{lstlisting}
+
+\subsection{Key Design Decisions}\label{key-design-decisions}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Dual Database Strategy}: Separate user data from content
+\item
+  \textbf{Hierarchical Content}: Tracks → Series → Lessons → Videos
+\item
+  \textbf{Human-First Editing}: Protect manual edits from automated
+  imports
+\item
+  \textbf{Progressive Enhancement}: Works without JavaScript, better
+  with it
+\item
+  \textbf{Mobile-First Design}: Responsive from the start
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{1.5 Book Structure}\label{book-structure}
+
+This book is organized into \textbf{10 parts}:
+
+\subsection{Part I: Foundation \& Planning (Chapters
+1-3)}\label{part-i-foundation-planning-chapters-1-3}
+
+Setting up your environment and understanding the architecture.
+
+\subsection{Part II: Backend Fundamentals (Chapters
+4-7)}\label{part-ii-backend-fundamentals-chapters-4-7}
+
+Database design, ORM setup, authentication, and API development.
+
+\subsection{Part III: Frontend Development (Chapters
+8-11)}\label{part-iii-frontend-development-chapters-8-11}
+
+SvelteKit basics, UI components, and building core pages.
+
+\subsection{Part IV: Advanced Features (Chapters
+12-15)}\label{part-iv-advanced-features-chapters-12-15}
+
+Video player, quiz system, progress tracking, and search.
+
+\subsection{Part V: Admin Panel (Chapters
+16-18)}\label{part-v-admin-panel-chapters-16-18}
+
+Building a complete content management interface.
+
+\subsection{Part VI: Content Pipeline (Chapters
+19-20)}\label{part-vi-content-pipeline-chapters-19-20}
+
+Automated content import and media management.
+
+\subsection{Part VII: Testing \& Quality (Chapters
+21-22)}\label{part-vii-testing-quality-chapters-21-22}
+
+Testing strategies and code quality tools.
+
+\subsection{Part VIII: Deployment (Chapters
+23-26)}\label{part-viii-deployment-chapters-23-26}
+
+Production builds, server setup, and monitoring.
+
+\subsection{Part IX: Scaling \& Optimization (Chapters
+27-28)}\label{part-ix-scaling-optimization-chapters-27-28}
+
+Performance tuning and growth strategies.
+
+\subsection{Part X: Appendices}\label{part-x-appendices}
+
+Reference materials and troubleshooting guides.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{How to Use This Book}\label{how-to-use-this-book}
+
+\subsection{If You're Following Along}\label{if-youre-following-along}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Type the code yourself} --- don't just copy-paste
+\item
+  \textbf{Run the code after each section} --- see it work
+\item
+  \textbf{Experiment} --- break things, fix them
+\item
+  \textbf{Take notes} --- document your learnings
+\end{enumerate}
+
+\subsection{If You're Using This as
+Reference}\label{if-youre-using-this-as-reference}
+
+\begin{itemize}
+\tightlist
+\item
+  Each chapter is self-contained
+\item
+  Code examples are complete and runnable
+\item
+  The appendices have quick reference guides
+\end{itemize}
+
+\subsection{Code Repository}\label{code-repository}
+
+All code from this book is available at:
+
+\begin{lstlisting}
+https://github.com/salahAit/afidna-Sveltekit
+\end{lstlisting}
+
+You can clone it to compare with your work or use it as a starting
+point.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Let's Begin}\label{lets-begin}
+
+In the next chapter, we'll dive deep into architecture design ---
+understanding why we make certain decisions and how they impact our
+application's future.
+
+Get your development environment ready. We're about to build something
+amazing.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{./chapter-02-architecture.md}{Chapter 2:
+Architecture Design}
+\end{quote}

@@ -1,0 +1,541 @@
+\chapter{Reusable Components}\label{reusable-components}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{11.1 Navbar with Auth State}\label{navbar-with-auth-state}
+
+A responsive navbar that adapts to authentication status.
+
+\begin{lstlisting}
+<!-- src/lib/components/Navbar.svelte -->
+<script lang="ts">
+    import type { User } from '$lib/server/db/schema';
+    import ThemeSwitcher from './ThemeSwitcher.svelte';
+    
+    interface Props {
+        user: User | null;
+    }
+    
+    let { user }: Props = $props();
+    let mobileMenuOpen = $state(false);
+    
+    const navLinks = [
+        { href: '/', label: 'الرئيسية' },
+        { href: '/tracks', label: 'المسارات' },
+        { href: '/lessons', label: 'الدروس' },
+        { href: '/search', label: 'بحث' },
+    ];
+</script>
+
+<nav class="navbar bg-base-100 shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto">
+        <!-- Logo -->
+        <div class="flex-1">
+            <a href="/" class="btn btn-ghost text-xl font-bold">
+                📚 أفدنا
+            </a>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-2">
+            {#each navLinks as link}
+                <a href={link.href} class="btn btn-ghost btn-sm">
+                    {link.label}
+                </a>
+            {/each}
+            
+            <div class="divider divider-horizontal mx-2"></div>
+            
+            <ThemeSwitcher />
+            
+            {#if user}
+                <div class="dropdown dropdown-end">
+                    <button class="btn btn-ghost btn-circle avatar">
+                        <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+                            {user.name.charAt(0)}
+                        </div>
+                    </button>
+                    <ul class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li class="menu-title">{user.name}</li>
+                        <li><a href="/dashboard">لوحة التحكم</a></li>
+                        {#if user.role === 'admin' || user.role === 'editor'}
+                            <li><a href="/admin">الإدارة</a></li>
+                        {/if}
+                        <li>
+                            <form method="POST" action="/auth/logout">
+                                <button type="submit" class="w-full text-right">
+                                    تسجيل الخروج
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            {:else}
+                <a href="/auth/login" class="btn btn-primary btn-sm">
+                    دخول
+                </a>
+            {/if}
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button 
+            class="btn btn-ghost md:hidden"
+            onclick={() => mobileMenuOpen = !mobileMenuOpen}
+        >
+            {mobileMenuOpen ? '✕' : '☰'}
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Drawer -->
+{#if mobileMenuOpen}
+    <div class="fixed inset-0 z-40 md:hidden">
+        <!-- Backdrop -->
+        <div 
+            class="absolute inset-0 bg-black/50"
+            onclick={() => mobileMenuOpen = false}
+        ></div>
+        
+        <!-- Menu -->
+        <div class="absolute right-0 top-0 h-full w-72 bg-base-100 shadow-xl p-4">
+            <div class="flex justify-between items-center mb-8">
+                <span class="text-xl font-bold">📚 أفدنا</span>
+                <button 
+                    class="btn btn-ghost btn-sm"
+                    onclick={() => mobileMenuOpen = false}
+                >
+                    ✕
+                </button>
+            </div>
+            
+            <ul class="menu">
+                {#each navLinks as link}
+                    <li>
+                        <a href={link.href} onclick={() => mobileMenuOpen = false}>
+                            {link.label}
+                        </a>
+                    </li>
+                {/each}
+            </ul>
+            
+            <div class="divider"></div>
+            
+            {#if user}
+                <div class="p-4 bg-base-200 rounded-lg mb-4">
+                    <p class="font-bold">{user.name}</p>
+                    <p class="text-sm text-base-content/70">{user.email}</p>
+                </div>
+                <form method="POST" action="/auth/logout">
+                    <button class="btn btn-outline btn-block">تسجيل الخروج</button>
+                </form>
+            {:else}
+                <a href="/auth/login" class="btn btn-primary btn-block">
+                    تسجيل الدخول
+                </a>
+            {/if}
+        </div>
+    </div>
+{/if}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{11.2 Footer Component}\label{footer-component}
+
+\begin{lstlisting}
+<!-- src/lib/components/Footer.svelte -->
+<script lang="ts">
+    const currentYear = new Date().getFullYear();
+    
+    const links = {
+        main: [
+            { href: '/tracks', label: 'المسارات' },
+            { href: '/lessons', label: 'الدروس' },
+            { href: '/about', label: 'عن الموقع' },
+        ],
+        legal: [
+            { href: '/privacy', label: 'الخصوصية' },
+            { href: '/terms', label: 'الشروط' },
+        ],
+    };
+</script>
+
+<footer class="footer footer-center p-10 bg-base-200 text-base-content">
+    <nav class="grid grid-flow-col gap-4">
+        {#each links.main as link}
+            <a href={link.href} class="link link-hover">{link.label}</a>
+        {/each}
+    </nav>
+    
+    <nav>
+        <div class="grid grid-flow-col gap-4">
+            <!-- Social Icons -->
+            <a href="https://twitter.com" target="_blank" class="btn btn-ghost btn-circle">
+                𝕏
+            </a>
+            <a href="https://youtube.com" target="_blank" class="btn btn-ghost btn-circle">
+                ▶
+            </a>
+            <a href="https://telegram.org" target="_blank" class="btn btn-ghost btn-circle">
+                ✈
+            </a>
+        </div>
+    </nav>
+    
+    <aside>
+        <p>جميع الحقوق محفوظة © {currentYear} أفدنا</p>
+    </aside>
+</footer>
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{11.3 Card Components}\label{card-components}
+
+\subsection{LessonCard}\label{lessoncard}
+
+\begin{lstlisting}
+<!-- src/lib/components/LessonCard.svelte -->
+<script lang="ts">
+    import type { Lesson } from '$lib/server/db/schema-content';
+    import { getTrackColor } from '$lib/theme';
+    
+    interface Props {
+        lesson: Lesson & { track?: { id: string; title: string } };
+        progress?: number;
+    }
+    
+    let { lesson, progress = 0 }: Props = $props();
+</script>
+
+<a 
+    href="/lessons/{lesson.slug}"
+    class="card bg-base-100 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
+>
+    {#if lesson.thumbnailUrl}
+        <figure>
+            <img src={lesson.thumbnailUrl} alt={lesson.title} class="h-40 w-full object-cover" />
+        </figure>
+    {/if}
+    
+    <div class="card-body">
+        {#if lesson.track}
+            <span class="badge badge-sm {getTrackColor(lesson.track.id)}">
+                {lesson.track.title}
+            </span>
+        {/if}
+        
+        <h3 class="card-title line-clamp-2">{lesson.title}</h3>
+        
+        {#if lesson.description}
+            <p class="text-sm text-base-content/70 line-clamp-2">
+                {lesson.description}
+            </p>
+        {/if}
+        
+        {#if lesson.instructor}
+            <p class="text-sm">👨‍🏫 {lesson.instructor}</p>
+        {/if}
+        
+        {#if progress > 0}
+            <div class="mt-2">
+                <progress 
+                    class="progress progress-primary w-full" 
+                    value={progress} 
+                    max="100"
+                ></progress>
+                <span class="text-xs text-base-content/60">{progress}% مكتمل</span>
+            </div>
+        {/if}
+    </div>
+</a>
+\end{lstlisting}
+
+\subsection{TrackCard}\label{trackcard}
+
+\begin{lstlisting}
+<!-- src/lib/components/TrackCard.svelte -->
+<script lang="ts">
+    import type { Track } from '$lib/server/db/schema-content';
+    import { getTrackColor, getTrackIcon } from '$lib/theme';
+    
+    interface Props {
+        track: Track & { lessonCount?: number };
+    }
+    
+    let { track }: Props = $props();
+</script>
+
+<a 
+    href="/tracks/{track.id}"
+    class="card bg-gradient-to-br {getTrackColor(track.id)} text-white shadow-lg hover:scale-105 transition-transform"
+>
+    <div class="card-body">
+        <span class="text-5xl">{getTrackIcon(track.id, track.icon)}</span>
+        <h3 class="card-title text-white">{track.title}</h3>
+        {#if track.description}
+            <p class="opacity-90 line-clamp-2">{track.description}</p>
+        {/if}
+        {#if track.lessonCount !== undefined}
+            <div class="card-actions justify-end">
+                <span class="badge badge-ghost">{track.lessonCount} درس</span>
+            </div>
+        {/if}
+    </div>
+</a>
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{11.4 Modal System}\label{modal-system}
+
+\begin{lstlisting}
+<!-- src/lib/components/Modal.svelte -->
+<script lang="ts">
+    interface Props {
+        open: boolean;
+        title?: string;
+        onClose: () => void;
+    }
+    
+    let { open, title, onClose, children }: Props & { children: any } = $props();
+    
+    function handleKeydown(e: KeyboardEvent) {
+        if (e.key === 'Escape' && open) {
+            onClose();
+        }
+    }
+</script>
+
+<svelte:window onkeydown={handleKeydown} />
+
+{#if open}
+    <div class="modal modal-open">
+        <!-- Backdrop -->
+        <div class="modal-backdrop bg-black/50" onclick={onClose}></div>
+        
+        <!-- Modal Box -->
+        <div class="modal-box relative">
+            <!-- Close Button -->
+            <button 
+                class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                onclick={onClose}
+            >
+                ✕
+            </button>
+            
+            {#if title}
+                <h3 class="font-bold text-lg mb-4">{title}</h3>
+            {/if}
+            
+            {@render children()}
+        </div>
+    </div>
+{/if}
+\end{lstlisting}
+
+\subsection{Usage}\label{usage}
+
+\begin{lstlisting}
+<script>
+    import Modal from '$lib/components/Modal.svelte';
+    
+    let showModal = $state(false);
+</script>
+
+<button class="btn" onclick={() => showModal = true}>
+    Open Modal
+</button>
+
+<Modal 
+    open={showModal} 
+    title="Confirm Action"
+    onClose={() => showModal = false}
+>
+    <p>Are you sure you want to continue?</p>
+    <div class="modal-action">
+        <button class="btn btn-ghost" onclick={() => showModal = false}>
+            Cancel
+        </button>
+        <button class="btn btn-primary">
+            Confirm
+        </button>
+    </div>
+</Modal>
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{11.5 Toast Notifications}\label{toast-notifications}
+
+\begin{lstlisting}
+<!-- src/lib/components/Toast.svelte -->
+<script lang="ts">
+    import { fly } from 'svelte/transition';
+    
+    interface Toast {
+        id: string;
+        message: string;
+        type: 'success' | 'error' | 'warning' | 'info';
+    }
+    
+    let toasts = $state<Toast[]>([]);
+    
+    export function showToast(message: string, type: Toast['type'] = 'info') {
+        const id = crypto.randomUUID();
+        toasts = [...toasts, { id, message, type }];
+        
+        setTimeout(() => {
+            toasts = toasts.filter(t => t.id !== id);
+        }, 4000);
+    }
+    
+    const icons = {
+        success: '✓',
+        error: '✕',
+        warning: '⚠',
+        info: 'ℹ',
+    };
+    
+    const classes = {
+        success: 'alert-success',
+        error: 'alert-error',
+        warning: 'alert-warning',
+        info: 'alert-info',
+    };
+</script>
+
+<div class="toast toast-top toast-end z-50">
+    {#each toasts as toast (toast.id)}
+        <div 
+            class="alert {classes[toast.type]}"
+            transition:fly={{ x: 100, duration: 300 }}
+        >
+            <span class="text-xl">{icons[toast.type]}</span>
+            <span>{toast.message}</span>
+        </div>
+    {/each}
+</div>
+\end{lstlisting}
+
+\subsection{Usage with Store}\label{usage-with-store}
+
+\begin{lstlisting}
+// src/lib/stores/toast.ts
+import { writable } from 'svelte/store';
+
+interface Toast {
+    id: string;
+    message: string;
+    type: 'success' | 'error' | 'warning' | 'info';
+}
+
+function createToastStore() {
+    const { subscribe, update } = writable<Toast[]>([]);
+
+    return {
+        subscribe,
+        show(message: string, type: Toast['type'] = 'info') {
+            const id = crypto.randomUUID();
+            update(toasts => [...toasts, { id, message, type }]);
+            
+            setTimeout(() => {
+                update(toasts => toasts.filter(t => t.id !== id));
+            }, 4000);
+        },
+        success(message: string) { this.show(message, 'success'); },
+        error(message: string) { this.show(message, 'error'); },
+        warning(message: string) { this.show(message, 'warning'); },
+    };
+}
+
+export const toast = createToastStore();
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{11.6 Loading States}\label{loading-states}
+
+\begin{lstlisting}
+<!-- src/lib/components/LoadingSpinner.svelte -->
+<script lang="ts">
+    interface Props {
+        size?: 'sm' | 'md' | 'lg';
+        text?: string;
+    }
+    
+    let { size = 'md', text }: Props = $props();
+    
+    const sizeClasses = {
+        sm: 'loading-sm',
+        md: 'loading-md',
+        lg: 'loading-lg',
+    };
+</script>
+
+<div class="flex flex-col items-center justify-center gap-2">
+    <span class="loading loading-spinner {sizeClasses[size]}"></span>
+    {#if text}
+        <span class="text-sm text-base-content/70">{text}</span>
+    {/if}
+</div>
+\end{lstlisting}
+
+\subsection{Skeleton Loading}\label{skeleton-loading}
+
+\begin{lstlisting}
+<!-- src/lib/components/SkeletonCard.svelte -->
+<div class="card bg-base-100 shadow">
+    <div class="card-body">
+        <div class="skeleton h-4 w-24 mb-2"></div>
+        <div class="skeleton h-6 w-full mb-4"></div>
+        <div class="skeleton h-4 w-full"></div>
+        <div class="skeleton h-4 w-3/4"></div>
+    </div>
+</div>
+\end{lstlisting}
+
+\subsection{Page Loading}\label{page-loading}
+
+\begin{lstlisting}
+<!-- src/routes/+layout.svelte -->
+<script>
+    import { navigating } from '$app/stores';
+    import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
+</script>
+
+{#if $navigating}
+    <div class="fixed inset-0 bg-base-100/80 z-50 flex items-center justify-center">
+        <LoadingSpinner size="lg" text="جاري التحميل..." />
+    </div>
+{/if}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary}\label{summary}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Component & Use Case \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Navbar & Navigation, auth state, mobile menu \\
+Footer & Links, social, copyright \\
+Cards & Display content items \\
+Modal & Dialogs, confirmations \\
+Toast & Notifications, feedback \\
+Loading & Spinners, skeletons \\
+\end{longtable}
+
+Part III is complete! We've built the entire frontend foundation. Next:
+advanced features.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{../part-4/chapter-12-video.md}{Part IV →
+Chapter 12: Video Player Integration}
+\end{quote}

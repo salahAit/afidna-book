@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+.env
+
+# Logs
+logs/
+*.log
+
+# Editor
+.vscode/
+.idea/
+
+# Latex build directory
+latex_build/
+
+# macOS
+.DS_Store
+
+# Thumbnails
+.thumbnails/
+
+# Temporary files
+*.tmp
+*~
+~*

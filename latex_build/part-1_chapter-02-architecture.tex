@@ -1,0 +1,431 @@
+\chapter{Architecture Design}\label{architecture-design}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2.1 Monolith vs Microservices}\label{monolith-vs-microservices}
+
+Before writing any code, we need to make a fundamental decision about
+our application's structure.
+
+\subsection{The Microservices Hype}\label{the-microservices-hype}
+
+You've probably heard that ``microservices are the future'' and
+``monoliths are dead.'' Let's examine this claim.
+
+\textbf{Microservices architecture} means splitting your application
+into many small, independent services:
+
+\begin{lstlisting}
+                    ┌──────────────┐
+                    │   API Gateway │
+                    └──────┬───────┘
+           ┌───────────────┼───────────────┐
+           │               │               │
+    ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
+    │ Auth Service│ │Content Svc  │ │Progress Svc │
+    └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+           │               │               │
+    ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
+    │  Users DB   │ │ Content DB  │ │ Progress DB │
+    └─────────────┘ └─────────────┘ └─────────────┘
+\end{lstlisting}
+
+\textbf{Advantages:} - Independent scaling - Technology flexibility -
+Team independence - Fault isolation
+
+\textbf{Disadvantages:} - Network latency between services - Distributed
+system complexity - Operational overhead - Debugging nightmares - Higher
+infrastructure costs
+
+\subsection{The Reality Check}\label{the-reality-check}
+
+Netflix, Amazon, and Google use microservices because they have: -
+Thousands of developers - Millions of users - Billions in revenue to pay
+for infrastructure
+
+For our educational platform, we have: - 1-5 developers - Hundreds to
+thousands of users - A budget that prefers efficiency
+
+\textbf{The truth}: Most applications don't need microservices. They add
+complexity that doesn't pay off until you're operating at massive scale.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2.2 The ``Compact Monolith''
+Philosophy}\label{the-compact-monolith-philosophy}
+
+We're going to build what I call a \textbf{``Compact Monolith''} --- a
+single, well-structured application that's:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Simple to develop}: One codebase, one language
+\item
+  \textbf{Simple to deploy}: One process to run
+\item
+  \textbf{Simple to scale}: Optimize what matters
+\item
+  \textbf{Easy to change}: Refactor to microservices later if needed
+\end{itemize}
+
+\begin{lstlisting}
+┌─────────────────────────────────────────────────┐
+│              Compact Monolith                    │
+│                                                  │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐        │
+│  │   Auth   │ │ Content  │ │ Progress │        │
+│  │  Module  │ │  Module  │ │  Module  │        │
+│  └────┬─────┘ └────┬─────┘ └────┬─────┘        │
+│       │            │            │               │
+│  ┌────┴────────────┴────────────┴────┐         │
+│  │         Shared Data Layer          │         │
+│  └────────────────┬──────────────────┘         │
+└───────────────────┼─────────────────────────────┘
+                    │
+         ┌──────────┴──────────┐
+         │     SQLite DBs      │
+         └─────────────────────┘
+\end{lstlisting}
+
+\subsection{Key Principles}\label{key-principles}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Modular by Design}: Clear separation of concerns
+\item
+  \textbf{Vertical Slices}: Each feature is self-contained
+\item
+  \textbf{Shared Infrastructure}: One database connection, one auth
+  system
+\item
+  \textbf{No Premature Optimization}: Build simple, optimize when needed
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2.3 Dual Database Strategy}\label{dual-database-strategy}
+
+One unique aspect of our architecture is using \textbf{two separate
+SQLite databases}.
+
+\subsection{Why Two Databases?}\label{why-two-databases}
+
+Consider the nature of our data:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2424}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4242}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Aspect
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+User Data
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Content Data
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Changes} & Frequently (every user action) & Rarely (admin
+updates) \\
+\textbf{Size} & Grows with users & Fixed (course catalog) \\
+\textbf{Backup} & Critical (user progress) & Less critical (can
+regenerate) \\
+\textbf{Access} & Read/Write & Mostly Read \\
+\end{longtable}
+
+\subsection{The Implementation}\label{the-implementation}
+
+\begin{lstlisting}
+data/
+├── users.db      # User-generated data
+│   ├── users          # Account information
+│   ├── sessions       # Login sessions
+│   └── lesson_progress # Watch history, quiz scores
+│
+└── content.db    # Educational content
+    ├── tracks         # Learning paths
+    ├── series         # Course series
+    ├── lessons        # Individual lessons
+    └── videos         # Video segments
+\end{lstlisting}
+
+\subsection{Benefits}\label{benefits}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Independent Backups}: Backup user data more frequently
+\item
+  \textbf{Easy Content Updates}: Replace content.db without affecting
+  users
+\item
+  \textbf{Performance Isolation}: Heavy reads don't affect writes
+\item
+  \textbf{Development Simplicity}: Clear ownership of data
+\end{enumerate}
+
+\subsection{Connection Setup}\label{connection-setup}
+
+\begin{lstlisting}
+// src/lib/server/db/index.ts
+
+import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { Database } from 'bun:sqlite';
+
+// User database (read-write)
+const usersSqlite = new Database('data/users.db');
+usersSqlite.exec('PRAGMA journal_mode = WAL');
+usersSqlite.exec('PRAGMA foreign_keys = ON');
+
+export const db = drizzle(usersSqlite);
+
+// Content database (read-mostly)
+const contentSqlite = new Database('data/content.db');
+contentSqlite.exec('PRAGMA foreign_keys = ON');
+
+export const contentDatabase = drizzle(contentSqlite);
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2.4 Content vs User Data
+Separation}\label{content-vs-user-data-separation}
+
+Let's define exactly what goes where.
+
+\subsection{users.db --- User-Generated
+Data}\label{users.db-user-generated-data}
+
+Everything that comes from user actions:
+
+\begin{lstlisting}[language=SQL]
+-- Who are our users?
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    name TEXT NOT NULL,
+    role TEXT DEFAULT 'user',  -- user, editor, admin
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Active login sessions
+CREATE TABLE sessions (
+    id TEXT PRIMARY KEY,  -- UUID
+    user_id INTEGER REFERENCES users(id),
+    expires_at TEXT NOT NULL
+);
+
+-- Learning progress
+CREATE TABLE lesson_progress (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    lesson_id TEXT NOT NULL,  -- References content.db
+    watched_seconds INTEGER DEFAULT 0,
+    video_completed INTEGER DEFAULT 0,
+    quiz_passed INTEGER DEFAULT 0,
+    quiz_score INTEGER DEFAULT 0
+);
+\end{lstlisting}
+
+\subsection{content.db --- Educational
+Content}\label{content.db-educational-content}
+
+All the learning material:
+
+\begin{lstlisting}[language=SQL]
+-- Learning tracks (e.g., "Islamic Creed", "Hadith Studies")
+CREATE TABLE tracks (
+    id TEXT PRIMARY KEY,  -- e.g., "aqeedah", "hadith"
+    title TEXT NOT NULL,
+    description TEXT,
+    icon TEXT,
+    "order" INTEGER DEFAULT 0
+);
+
+-- Series within tracks
+CREATE TABLE series (
+    id TEXT PRIMARY KEY,
+    track_id TEXT REFERENCES tracks(id),
+    title TEXT NOT NULL,
+    instructor TEXT,
+    is_locked INTEGER DEFAULT 0
+);
+
+-- Individual lessons
+CREATE TABLE lessons (
+    id TEXT PRIMARY KEY,
+    track_id TEXT REFERENCES tracks(id),
+    series_id TEXT REFERENCES series(id),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    is_published INTEGER DEFAULT 0
+);
+
+-- Video segments within lessons
+CREATE TABLE videos (
+    id TEXT PRIMARY KEY,
+    lesson_id TEXT REFERENCES lessons(id),
+    title TEXT,
+    youtube_id TEXT,
+    duration INTEGER,
+    quiz TEXT  -- JSON array of questions
+);
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2.5 Designing for Scale}\label{designing-for-scale}
+
+Even though we're building a monolith, we should design for growth.
+
+\subsection{Scaling Strategies}\label{scaling-strategies}
+
+\textbf{1. Vertical Scaling (Scale Up)} - Add more CPU/RAM to the server
+- Works until \textasciitilde10,000 concurrent users - Simple and
+effective
+
+\textbf{2. Read Replicas}
+
+\begin{lstlisting}
+┌─────────────┐
+│  Primary DB │ ◄── Writes
+└──────┬──────┘
+       │ Replication
+┌──────┴──────┐
+│   Replica   │ ◄── Reads
+└─────────────┘
+\end{lstlisting}
+
+\textbf{3. Edge Caching}
+
+\begin{lstlisting}
+User → CDN → Server
+         ↓
+    Cached Content
+\end{lstlisting}
+
+\textbf{4. Eventually, Microservices} If we grow to millions of users,
+we can extract services: - Auth → Separate service - Video processing →
+Separate service - Search → ElasticSearch cluster
+
+\subsection{Our Approach}\label{our-approach}
+
+We'll build with these principles:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Stateless requests}: Any server can handle any request
+\item
+  \textbf{Database as source of truth}: No in-memory state
+\item
+  \textbf{Cacheable responses}: Proper HTTP headers
+\item
+  \textbf{Modular code}: Easy to extract later
+\end{enumerate}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{2.6 Security Considerations from Day
+One}\label{security-considerations-from-day-one}
+
+Security isn't an afterthought --- it's baked into our architecture.
+
+\subsection{Authentication Security}\label{authentication-security}
+
+\begin{lstlisting}
+Password Flow:
+User Input → bcrypt hash → Store hash
+Login:      User Input → bcrypt verify → Session token
+\end{lstlisting}
+
+\textbf{Key decisions:} - \textbf{bcrypt} for password hashing (not MD5,
+not SHA1) - \textbf{Session tokens} stored in HttpOnly cookies -
+\textbf{SameSite=Lax} to prevent CSRF - \textbf{Secure flag} in
+production
+
+\subsection{Authorization Layers}\label{authorization-layers}
+
+\begin{lstlisting}
+Request Flow:
+1. hooks.server.ts  → Validate session
+2. +page.server.ts  → Check role
+3. Database query   → Filter by user
+\end{lstlisting}
+
+\subsection{Content Protection}\label{content-protection}
+
+\begin{lstlisting}
+// Audit trail on every content table
+{
+    created_at: TEXT,       // When created
+    updated_at: TEXT,       // When modified
+    last_modified_by: TEXT, // Who modified
+    is_locked: INTEGER      // Prevent changes
+}
+\end{lstlisting}
+
+\subsection{Rate Limiting
+(Placeholder)}\label{rate-limiting-placeholder}
+
+\begin{lstlisting}
+// hooks.server.ts
+if (url.pathname.startsWith('/api/auth')) {
+    // TODO: Implement rate limiting
+    // 5 requests per minute per IP
+}
+\end{lstlisting}
+
+\subsection{SQL Injection Prevention}\label{sql-injection-prevention}
+
+Drizzle ORM uses parameterized queries automatically:
+
+\begin{lstlisting}
+// Safe — Drizzle handles escaping
+db.select()
+  .from(users)
+  .where(eq(users.email, userInput));
+
+// NEVER do this
+db.run(`SELECT * FROM users WHERE email = '${userInput}'`);
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary}\label{summary}
+
+In this chapter, we established our architectural foundation:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Decision & Choice & Reason \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Architecture & Compact Monolith & Simplicity, low overhead \\
+Database & Dual SQLite & Separation of concerns \\
+Auth & Session-based & Simple, secure \\
+Scaling & Start small, grow smart & Optimize when needed \\
+Security & Defense in depth & Built-in from day one \\
+\end{longtable}
+
+These decisions will guide every choice we make throughout the book.
+They're not set in stone --- if your needs differ, adapt them. But for
+most educational platforms, this architecture will serve you well.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{./chapter-03-setup.md}{Chapter 3: Setting
+Up the Development Environment}
+\end{quote}

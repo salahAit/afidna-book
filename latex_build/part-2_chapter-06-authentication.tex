@@ -1,0 +1,609 @@
+\chapter{Authentication System}\label{authentication-system}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.1 Session-Based vs JWT}\label{session-based-vs-jwt}
+
+Two main approaches exist for web authentication. Let's compare.
+
+\subsection{JWT (JSON Web Tokens)}\label{jwt-json-web-tokens}
+
+\begin{lstlisting}
+┌──────────┐                    ┌──────────┐
+│  Client  │─── Login ────────► │  Server  │
+│          │◄── JWT Token ───── │          │
+│          │                    │          │
+│          │─── Request + JWT ─►│          │
+│          │◄── Response ────── │  (No DB  │
+│          │                    │   check) │
+└──────────┘                    └──────────┘
+\end{lstlisting}
+
+\textbf{Pros:} - Stateless (no database lookup) - Works across domains -
+Good for APIs
+
+\textbf{Cons:} - Can't revoke easily - Token size adds overhead -
+Security complexity
+
+\subsection{Session-Based}\label{session-based}
+
+\begin{lstlisting}
+┌──────────┐                    ┌──────────┐
+│  Client  │─── Login ────────► │  Server  │
+│          │◄── Session Cookie ─│          │
+│          │                    │          │
+│  (Cookie │─── Request ───────►│  (Check  │
+│  sent    │◄── Response ────── │   DB)    │
+│  auto)   │                    │          │
+└──────────┘                    └──────────┘
+\end{lstlisting}
+
+\textbf{Pros:} - Easy session revocation - Server controls everything -
+Simple implementation - Better security by default
+
+\textbf{Cons:} - Requires database lookup - Doesn't work across domains
+easily
+
+\subsection{Our Choice: Sessions}\label{our-choice-sessions}
+
+For our educational platform: - \textbf{Same-origin requests} (no API
+for other apps) - \textbf{Easy logout} (just delete session) -
+\textbf{Session data} (store progress, preferences) -
+\textbf{Simplicity} (less code, fewer bugs)
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.2 Password Hashing with
+bcrypt}\label{password-hashing-with-bcrypt}
+
+Never store plain passwords. Always hash.
+
+\subsection{Why bcrypt?}\label{why-bcrypt}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Algorithm & Security \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+MD5 & ❌ Broken \\
+SHA1 & ❌ Broken \\
+SHA256 & ⚠️ Too fast \\
+bcrypt & ✅ Designed for passwords \\
+Argon2 & ✅ Newer, more complex \\
+\end{longtable}
+
+bcrypt is: - \textbf{Slow by design} (prevents brute force) -
+\textbf{Salted automatically} (prevents rainbow tables) -
+\textbf{Configurable cost} (adjust for hardware)
+
+\subsection{Implementation}\label{implementation}
+
+\begin{lstlisting}
+// src/lib/server/auth.ts
+import * as bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 12; // ~0.3s per hash
+
+export async function hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, SALT_ROUNDS);
+}
+
+export async function verifyPassword(
+    password: string, 
+    hash: string
+): Promise<boolean> {
+    return bcrypt.compare(password, hash);
+}
+\end{lstlisting}
+
+\subsection{Usage}\label{usage}
+
+\begin{lstlisting}
+// Registration
+const passwordHash = await hashPassword(userPassword);
+db.insert(users).values({
+    email,
+    passwordHash,
+    name,
+}).run();
+
+// Login
+const user = db.select().from(users)
+    .where(eq(users.email, email))
+    .get();
+
+if (user && await verifyPassword(password, user.passwordHash)) {
+    // Login successful
+} else {
+    // Invalid credentials
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.3 Session Management}\label{session-management}
+
+Sessions link browser requests to user accounts.
+
+\subsection{Session Flow}\label{session-flow}
+
+\begin{lstlisting}
+1. User logs in with email/password
+2. Server:
+   - Validates credentials
+   - Creates session in database
+   - Sets cookie with session ID
+
+3. User makes request
+4. Server:
+   - Reads session ID from cookie
+   - Looks up session in database
+   - Attaches user to request
+
+5. User logs out
+6. Server:
+   - Deletes session from database
+   - Clears cookie
+\end{lstlisting}
+
+\subsection{Session Schema}\label{session-schema}
+
+\begin{lstlisting}
+// In schema.ts
+export const sessions = sqliteTable('sessions', {
+    id: text('id').primaryKey(),        // UUID
+    userId: integer('user_id').notNull(),
+    expiresAt: text('expires_at').notNull(),
+    createdAt: text('created_at').default('CURRENT_TIMESTAMP'),
+});
+\end{lstlisting}
+
+\subsection{Session Functions}\label{session-functions}
+
+\begin{lstlisting}
+// src/lib/server/auth.ts
+import { db, sessions, users } from '$lib/server/db';
+import { eq, and, gt } from 'drizzle-orm';
+import { randomUUID } from 'crypto';
+
+const SESSION_DURATION_DAYS = 7;
+const REMEMBER_ME_DAYS = 30;
+
+export function createSession(
+    userId: number, 
+    rememberMe: boolean = false
+): { sessionId: string; expiresAt: Date } {
+    const sessionId = randomUUID();
+    const days = rememberMe ? REMEMBER_ME_DAYS : SESSION_DURATION_DAYS;
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + days);
+
+    db.insert(sessions).values({
+        id: sessionId,
+        userId,
+        expiresAt: expiresAt.toISOString(),
+    }).run();
+
+    return { sessionId, expiresAt };
+}
+
+export function validateSession(sessionId: string) {
+    const now = new Date().toISOString();
+    
+    const result = db
+        .select({
+            session: sessions,
+            user: users,
+        })
+        .from(sessions)
+        .innerJoin(users, eq(sessions.userId, users.id))
+        .where(
+            and(
+                eq(sessions.id, sessionId),
+                gt(sessions.expiresAt, now)
+            )
+        )
+        .get();
+
+    if (!result) return null;
+
+    return {
+        session: result.session,
+        user: result.user,
+    };
+}
+
+export function deleteSession(sessionId: string) {
+    db.delete(sessions).where(eq(sessions.id, sessionId)).run();
+}
+
+export function deleteUserSessions(userId: number) {
+    db.delete(sessions).where(eq(sessions.userId, userId)).run();
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.4 Cookie Security (HttpOnly,
+SameSite)}\label{cookie-security-httponly-samesite}
+
+Cookies must be configured securely.
+
+\subsection{Cookie Options}\label{cookie-options}
+
+\begin{lstlisting}
+import type { Cookies } from '@sveltejs/kit';
+
+const COOKIE_NAME = 'session';
+
+export function setSessionCookie(
+    cookies: Cookies, 
+    sessionId: string, 
+    expiresAt: Date
+) {
+    cookies.set(COOKIE_NAME, sessionId, {
+        path: '/',
+        httpOnly: true,           // JavaScript can't read it
+        sameSite: 'lax',          // Prevents CSRF
+        secure: process.env.NODE_ENV === 'production',
+        expires: expiresAt,
+    });
+}
+
+export function getSessionCookie(cookies: Cookies): string | undefined {
+    return cookies.get(COOKIE_NAME);
+}
+
+export function clearSessionCookie(cookies: Cookies) {
+    cookies.delete(COOKIE_NAME, { path: '/' });
+}
+\end{lstlisting}
+
+\subsection{Option Explanations}\label{option-explanations}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Option & Value & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!httpOnly: true!} & Browser only & Prevents XSS
+stealing session \\
+\passthrough{\lstinline!sameSite: 'lax'!} & Same origin + links &
+Prevents CSRF attacks \\
+\passthrough{\lstinline!secure: true!} & HTTPS only & Prevents
+interception \\
+\passthrough{\lstinline!path: '/'!} & All routes & Session works
+everywhere \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.5 Remember Me Functionality}\label{remember-me-functionality}
+
+Users can choose to stay logged in longer.
+
+\subsection{Implementation}\label{implementation-1}
+
+\begin{lstlisting}
+// Login action
+export const actions: Actions = {
+    default: async ({ request, cookies }) => {
+        const form = await request.formData();
+        const email = form.get('email') as string;
+        const password = form.get('password') as string;
+        const rememberMe = form.get('rememberMe') === 'true';
+
+        // Validate user...
+
+        // Create session with extended expiry if rememberMe
+        const { sessionId, expiresAt } = createSession(
+            user.id, 
+            rememberMe  // 30 days vs 7 days
+        );
+
+        setSessionCookie(cookies, sessionId, expiresAt);
+
+        return redirect(302, '/');
+    }
+};
+\end{lstlisting}
+
+\subsection{Login Form}\label{login-form}
+
+\begin{lstlisting}
+<form method="POST">
+    <input type="email" name="email" required />
+    <input type="password" name="password" required />
+    
+    <label>
+        <input type="checkbox" name="rememberMe" value="true" />
+        Remember me for 30 days
+    </label>
+    
+    <button type="submit">Login</button>
+</form>
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.6 Role-Based Access Control
+(RBAC)}\label{role-based-access-control-rbac}
+
+Different users have different permissions.
+
+\subsection{Roles}\label{roles}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Role & Permissions \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!user!} & View content, track progress \\
+\passthrough{\lstinline!editor!} & Edit content (unlocked) \\
+\passthrough{\lstinline!admin!} & Full access, lock/unlock content \\
+\end{longtable}
+
+\subsection{Schema}\label{schema}
+
+\begin{lstlisting}
+// In users table
+role: text('role').default('user').notNull(),
+\end{lstlisting}
+
+\subsection{Authorization Helpers}\label{authorization-helpers}
+
+\begin{lstlisting}
+// src/lib/server/auth.ts
+
+export function isAdmin(user: User | null): boolean {
+    return user?.role === 'admin';
+}
+
+export function isEditor(user: User | null): boolean {
+    return user?.role === 'editor' || user?.role === 'admin';
+}
+
+export function canEditContent(user: User | null): boolean {
+    return isEditor(user);
+}
+
+export function canLockContent(user: User | null): boolean {
+    return isAdmin(user);
+}
+\end{lstlisting}
+
+\subsection{Usage in Load Functions}\label{usage-in-load-functions}
+
+\begin{lstlisting}
+// src/routes/admin/+page.server.ts
+import { redirect } from '@sveltejs/kit';
+import { isEditor } from '$lib/server/auth';
+
+export async function load({ locals }) {
+    if (!locals.user) {
+        throw redirect(302, '/auth/login?redirect=/admin');
+    }
+    
+    if (!isEditor(locals.user)) {
+        throw redirect(302, '/');
+    }
+
+    // Load admin data...
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{6.7 Protected Routes with
+Hooks}\label{protected-routes-with-hooks}
+
+SvelteKit hooks provide middleware-like functionality.
+
+\subsection{The Hook}\label{the-hook}
+
+Create \passthrough{\lstinline!src/hooks.server.ts!}:
+
+\begin{lstlisting}
+import type { Handle } from '@sveltejs/kit';
+import { validateSession, getSessionCookie } from '$lib/server/auth';
+
+export const handle: Handle = async ({ event, resolve }) => {
+    // Get session from cookie
+    const sessionId = getSessionCookie(event.cookies);
+
+    if (sessionId) {
+        const result = validateSession(sessionId);
+        
+        if (result) {
+            // Attach user to request
+            event.locals.user = result.user;
+        } else {
+            // Invalid/expired session - clear cookie
+            event.cookies.delete('session', { path: '/' });
+        }
+    }
+
+    // Rate limiting placeholder for auth routes
+    if (event.url.pathname.startsWith('/api/auth')) {
+        // TODO: Implement rate limiting
+    }
+
+    return resolve(event);
+};
+\end{lstlisting}
+
+\subsection{Type Definitions}\label{type-definitions}
+
+Update \passthrough{\lstinline!src/app.d.ts!}:
+
+\begin{lstlisting}
+import type { User } from '$lib/server/db/schema';
+
+declare global {
+    namespace App {
+        interface Locals {
+            user: User | null;
+        }
+    }
+}
+
+export {};
+\end{lstlisting}
+
+\subsection{Accessing User in Routes}\label{accessing-user-in-routes}
+
+\begin{lstlisting}
+// +page.server.ts
+export async function load({ locals }) {
+    // locals.user is available everywhere!
+    const isLoggedIn = !!locals.user;
+    
+    return {
+        user: locals.user,
+        isLoggedIn,
+    };
+}
+\end{lstlisting}
+
+\subsection{Layout Data}\label{layout-data}
+
+Share user across all pages:
+
+\begin{lstlisting}
+// src/routes/+layout.server.ts
+export async function load({ locals }) {
+    return {
+        user: locals.user,
+    };
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+<!-- src/routes/+layout.svelte -->
+<script>
+    let { data, children } = $props();
+</script>
+
+{#if data.user}
+    <p>Logged in as {data.user.name}</p>
+{/if}
+
+{@render children()}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Complete Auth Module}\label{complete-auth-module}
+
+Here's the full \passthrough{\lstinline!src/lib/server/auth.ts!}:
+
+\begin{lstlisting}
+import * as bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
+import { db, users, sessions, type User } from '$lib/server/db';
+import { eq, and, gt } from 'drizzle-orm';
+import type { Cookies } from '@sveltejs/kit';
+
+// Configuration
+const SALT_ROUNDS = 12;
+const SESSION_DAYS = 7;
+const REMEMBER_ME_DAYS = 30;
+const COOKIE_NAME = 'session';
+
+// Password hashing
+export async function hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, SALT_ROUNDS);
+}
+
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(password, hash);
+}
+
+// Session management
+export function createSession(userId: number, rememberMe = false) {
+    const sessionId = randomUUID();
+    const days = rememberMe ? REMEMBER_ME_DAYS : SESSION_DAYS;
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + days);
+
+    db.insert(sessions).values({
+        id: sessionId,
+        userId,
+        expiresAt: expiresAt.toISOString(),
+    }).run();
+
+    return { sessionId, expiresAt };
+}
+
+export function validateSession(sessionId: string) {
+    const now = new Date().toISOString();
+    
+    return db
+        .select({ session: sessions, user: users })
+        .from(sessions)
+        .innerJoin(users, eq(sessions.userId, users.id))
+        .where(and(eq(sessions.id, sessionId), gt(sessions.expiresAt, now)))
+        .get();
+}
+
+export function deleteSession(sessionId: string) {
+    db.delete(sessions).where(eq(sessions.id, sessionId)).run();
+}
+
+// Cookie helpers
+export function setSessionCookie(cookies: Cookies, sessionId: string, expiresAt: Date) {
+    cookies.set(COOKIE_NAME, sessionId, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        expires: expiresAt,
+    });
+}
+
+export function getSessionCookie(cookies: Cookies) {
+    return cookies.get(COOKIE_NAME);
+}
+
+export function clearSessionCookie(cookies: Cookies) {
+    cookies.delete(COOKIE_NAME, { path: '/' });
+}
+
+// Role helpers
+export const isAdmin = (user: User | null) => user?.role === 'admin';
+export const isEditor = (user: User | null) => 
+    user?.role === 'editor' || user?.role === 'admin';
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary}\label{summary}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Component & Implementation \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Strategy & Session-based (simple, secure) \\
+Passwords & bcrypt with salt rounds \\
+Sessions & UUID in SQLite + HttpOnly cookie \\
+Remember Me & Extended cookie expiry \\
+Roles & user / editor / admin \\
+Protection & SvelteKit hooks middleware \\
+\end{longtable}
+
+Authentication is now complete. Next chapter: API design patterns.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{./chapter-07-api.md}{Chapter 7: API Design}
+\end{quote}

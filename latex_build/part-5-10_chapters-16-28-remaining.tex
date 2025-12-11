@@ -1,0 +1,382 @@
+\chapter{Part V: Admin Panel}\label{part-v-admin-panel}
+
+\section{Chapter 16: Admin Dashboard}\label{chapter-16-admin-dashboard}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{16.1 Access Control}\label{access-control}
+
+\begin{lstlisting}
+// src/routes/admin/+layout.server.ts
+import { redirect } from '@sveltejs/kit';
+import { isEditor } from '$lib/server/auth';
+
+export async function load({ locals }) {
+    if (!locals.user) {
+        throw redirect(302, '/auth/login?redirect=/admin');
+    }
+    
+    if (!isEditor(locals.user)) {
+        throw redirect(302, '/');
+    }
+
+    return { user: locals.user };
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{16.2-16.5 Dashboard
+Implementation}\label{dashboard-implementation}
+
+\begin{lstlisting}
+<!-- src/routes/admin/+page.svelte -->
+<script lang="ts">
+    let { data } = $props();
+</script>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="stat bg-base-100 rounded-lg shadow">
+        <div class="stat-title">المسارات</div>
+        <div class="stat-value text-primary">{data.stats.tracks}</div>
+    </div>
+    <div class="stat bg-base-100 rounded-lg shadow">
+        <div class="stat-title">السلاسل</div>
+        <div class="stat-value text-secondary">{data.stats.series}</div>
+    </div>
+    <div class="stat bg-base-100 rounded-lg shadow">
+        <div class="stat-title">الدروس</div>
+        <div class="stat-value text-accent">{data.stats.lessons}</div>
+    </div>
+    <div class="stat bg-base-100 rounded-lg shadow">
+        <div class="stat-title">الفيديوهات</div>
+        <div class="stat-value text-info">{data.stats.videos}</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <a href="/admin/lessons" class="btn btn-outline">📝 الدروس</a>
+    <a href="/admin/videos" class="btn btn-outline">🎬 الفيديوهات</a>
+    <a href="/admin/series" class="btn btn-outline">📂 السلاسل</a>
+    <a href="/admin/tracks" class="btn btn-outline">📚 المسارات</a>
+</div>
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Chapter 17: Content
+Management}\label{chapter-17-content-management}
+
+\subsection{17.1-17.6 CRUD Operations}\label{crud-operations}
+
+\begin{lstlisting}
+// src/routes/admin/lessons/[id]/+page.server.ts
+export const actions: Actions = {
+    update: async ({ request, params, locals }) => {
+        const form = await request.formData();
+        
+        contentDatabase
+            .update(lessons)
+            .set({
+                title: form.get('title') as string,
+                description: form.get('description') as string,
+                updatedAt: new Date().toISOString(),
+                lastModifiedBy: locals.user.id.toString(),
+            })
+            .where(eq(lessons.id, params.id))
+            .run();
+
+        return { success: true };
+    },
+
+    toggleLock: async ({ params, locals }) => {
+        if (locals.user.role !== 'admin') {
+            return fail(403, { error: 'Admin only' });
+        }
+
+        const lesson = contentDatabase
+            .select()
+            .from(lessons)
+            .where(eq(lessons.id, params.id))
+            .get();
+
+        contentDatabase
+            .update(lessons)
+            .set({ isLocked: !lesson.isLocked })
+            .where(eq(lessons.id, params.id))
+            .run();
+
+        return { success: true };
+    },
+};
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Chapter 18: Audit \&
+Protection}\label{chapter-18-audit-protection}
+
+\subsection{18.1-18.5 Audit Trail}\label{audit-trail}
+
+\begin{lstlisting}
+// All content tables have:
+{
+    createdAt: TEXT,         // When created
+    updatedAt: TEXT,         // Last modified
+    lastModifiedBy: TEXT,    // 'script' or user ID
+    isLocked: INTEGER,       // Prevent changes
+}
+
+// Check before update:
+function canModify(item, forceMode = false) {
+    if (item.isLocked) return false;
+    if (item.lastModifiedBy !== 'script' && !forceMode) return false;
+    return true;
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\chapter{Part VI: Content Pipeline}\label{part-vi-content-pipeline}
+
+\section{Chapter 19: Content Seeding}\label{chapter-19-content-seeding}
+
+\subsection{19.1-19.6 Seed Script}\label{seed-script}
+
+\begin{lstlisting}
+// scripts/seed-content.ts
+async function seedLesson(lesson, forceMode) {
+    const existing = contentDatabase
+        .select()
+        .from(lessons)
+        .where(eq(lessons.id, lesson.id))
+        .get();
+
+    if (existing) {
+        // Check if can update
+        if (existing.isLocked) {
+            console.log(`⏭️  Skipping locked: ${lesson.id}`);
+            return;
+        }
+        if (existing.lastModifiedBy !== 'script' && !forceMode) {
+            console.log(`⏭️  Skipping human edit: ${lesson.id}`);
+            return;
+        }
+        
+        // Update
+        contentDatabase.update(lessons).set({...lesson}).run();
+    } else {
+        // Insert
+        contentDatabase.insert(lessons).values({...lesson}).run();
+    }
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Chapter 20: Media
+Management}\label{chapter-20-media-management}
+
+\subsection{R2/S3 Integration (for
+future)}\label{r2s3-integration-for-future}
+
+\begin{lstlisting}
+// Upload to Cloudflare R2
+async function uploadToR2(file: File, key: string) {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await fetch(`${R2_ENDPOINT}/${key}`, {
+        method: 'PUT',
+        body: file,
+        headers: {
+            'Authorization': `Bearer ${R2_TOKEN}`,
+        },
+    });
+    
+    return `${R2_PUBLIC_URL}/${key}`;
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\chapter{Part VII: Testing \& Quality}\label{part-vii-testing-quality}
+
+\section{Chapter 21: Testing
+Strategy}\label{chapter-21-testing-strategy}
+
+\subsection{Unit Tests with Bun}\label{unit-tests-with-bun}
+
+\begin{lstlisting}
+// tests/auth.test.ts
+import { describe, expect, test } from 'bun:test';
+import { hashPassword, verifyPassword } from '$lib/server/auth';
+
+describe('Auth', () => {
+    test('password hashing', async () => {
+        const password = 'test123';
+        const hash = await hashPassword(password);
+        
+        expect(hash).not.toBe(password);
+        expect(await verifyPassword(password, hash)).toBe(true);
+        expect(await verifyPassword('wrong', hash)).toBe(false);
+    });
+});
+\end{lstlisting}
+
+\subsection{Run Tests}\label{run-tests}
+
+\begin{lstlisting}[language=bash]
+bun test
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Chapter 22: Code Quality}\label{chapter-22-code-quality}
+
+\subsection{ESLint + Prettier}\label{eslint-prettier}
+
+\begin{lstlisting}
+// .prettierrc
+{
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingComma": "es5"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+bun run format
+bun run lint
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\chapter{Part VIII: Deployment}\label{part-viii-deployment}
+
+\section{Chapter 23-26: Production
+Deployment}\label{chapter-23-26-production-deployment}
+
+\subsection{Build}\label{build}
+
+\begin{lstlisting}[language=bash]
+bun run build
+\end{lstlisting}
+
+\subsection{VPS Deployment}\label{vps-deployment}
+
+\begin{lstlisting}[language=bash]
+# Ubuntu server
+sudo apt update
+curl -fsSL https://bun.sh/install | bash
+git clone <repo>
+cd afidna
+bun install
+bun run db:setup
+bun run db:content  
+bun run build
+
+# Run with systemd
+sudo systemctl enable afidna
+sudo systemctl start afidna
+\end{lstlisting}
+
+\subsection{Caddy Config}\label{caddy-config}
+
+\begin{lstlisting}
+afidna.com {
+    reverse_proxy localhost:3000
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\chapter{Part IX: Scaling \&
+Optimization}\label{part-ix-scaling-optimization}
+
+\section{Chapter 27-28: Performance}\label{chapter-27-28-performance}
+
+\subsection{Database Optimization}\label{database-optimization}
+
+\begin{lstlisting}
+// Use indexes
+CREATE INDEX idx_lessons_slug ON lessons(slug);
+
+// Use specific selects
+db.select({ id, title }).from(lessons);
+
+// Use limits
+.limit(10)
+\end{lstlisting}
+
+\subsection{Caching}\label{caching}
+
+\begin{lstlisting}
+// Cache headers
+return new Response(body, {
+    headers: {
+        'Cache-Control': 'public, max-age=3600',
+    },
+});
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\chapter{Part X: Appendices}\label{part-x-appendices}
+
+\section{Appendix A: Code Reference}\label{appendix-a-code-reference}
+
+All schemas, APIs, and components are in the codebase.
+
+\section{Appendix B: Commands}\label{appendix-b-commands}
+
+\begin{lstlisting}[language=bash]
+# Development
+bun run dev
+
+# Database
+bun run db:setup
+bun run db:content
+bun run seed
+
+# Build
+bun run build
+bun run preview
+\end{lstlisting}
+
+\section{Appendix C: Troubleshooting}\label{appendix-c-troubleshooting}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Problem & Solution \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Port in use & \passthrough{\lstinline!kill -9 $(lsof -ti:5173)!} \\
+DB locked & Stop other processes \\
+Build fails & Check TypeScript errors \\
+\end{longtable}
+
+\section{Appendix D: Resources}\label{appendix-d-resources}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://kit.svelte.dev}{SvelteKit Docs}
+\item
+  \href{https://orm.drizzle.team}{Drizzle Docs}
+\item
+  \href{https://daisyui.com}{DaisyUI Docs}
+\item
+  \href{https://tailwindcss.com}{Tailwind Docs}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{End of Book}
+
+Thank you for reading! Build something amazing. 🚀
+\end{quote}

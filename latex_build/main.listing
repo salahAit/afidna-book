@@ -1,0 +1,11 @@
+# Development
+bun run dev
+
+# Database
+bun run db:setup
+bun run db:content
+bun run seed
+
+# Build
+bun run build
+bun run preview

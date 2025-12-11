@@ -1,0 +1,548 @@
+\chapter{Setting Up the Development
+Environment}\label{setting-up-the-development-environment}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3.1 Installing Bun}\label{installing-bun}
+
+Bun is our JavaScript runtime --- think of it as a faster, more modern
+alternative to Node.js.
+
+\subsection{What is Bun?}\label{what-is-bun}
+
+Bun is an all-in-one toolkit that includes: - \textbf{Runtime}: Executes
+JavaScript/TypeScript - \textbf{Package Manager}: Faster than npm/yarn -
+\textbf{Bundler}: Built-in bundling for production - \textbf{Test
+Runner}: Native testing support
+
+\subsection{Installation}\label{installation}
+
+\textbf{macOS / Linux:}
+
+\begin{lstlisting}[language=bash]
+curl -fsSL https://bun.sh/install | bash
+\end{lstlisting}
+
+\textbf{Windows (via WSL):}
+
+\begin{lstlisting}[language=bash]
+# First, install WSL if you haven't
+wsl --install
+
+# Then install Bun in WSL
+curl -fsSL https://bun.sh/install | bash
+\end{lstlisting}
+
+\textbf{Verify installation:}
+
+\begin{lstlisting}[language=bash]
+bun --version
+# Should output: 1.x.x
+\end{lstlisting}
+
+\subsection{Why Bun Over Node.js?}\label{why-bun-over-node.js}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Feature & Node.js & Bun \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Startup time & \textasciitilde40ms & \textasciitilde5ms \\
+Package install & \textasciitilde10s & \textasciitilde2s \\
+TypeScript & Needs transpiler & Native \\
+SQLite & Needs npm package & Built-in \\
+Test runner & Needs Jest/Vitest & Built-in \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3.2 Editor Setup (VS Code /
+Cursor)}\label{editor-setup-vs-code-cursor}
+
+A good editor setup will save you hours of debugging.
+
+\subsection{VS Code Installation}\label{vs-code-installation}
+
+Download from: https://code.visualstudio.com/
+
+\subsection{Cursor (AI-Powered
+Alternative)}\label{cursor-ai-powered-alternative}
+
+Cursor is VS Code with AI built-in: https://cursor.sh/
+
+\subsection{Recommended Settings}\label{recommended-settings}
+
+Create \passthrough{\lstinline!.vscode/settings.json!} in your project:
+
+\begin{lstlisting}
+{
+    // Editor basics
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    
+    // TypeScript
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.suggest.autoImports": true,
+    
+    // Svelte
+    "svelte.enable-ts-plugin": true,
+    
+    // File associations
+    "files.associations": {
+        "*.svelte": "svelte"
+    },
+    
+    // Exclude from search
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/dist": true,
+        "**/.svelte-kit": true
+    }
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3.3 Essential Extensions}\label{essential-extensions}
+
+Install these VS Code extensions:
+
+\subsection{Must-Have}\label{must-have}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Extension & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Svelte for VS Code} & Svelte language support \\
+\textbf{Tailwind CSS IntelliSense} & Tailwind autocomplete \\
+\textbf{Prettier} & Code formatting \\
+\textbf{ESLint} & Code linting \\
+\textbf{Error Lens} & Inline error display \\
+\end{longtable}
+
+\subsection{Recommended}\label{recommended}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Extension & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{GitLens} & Git blame and history \\
+\textbf{SQLite Viewer} & View .db files \\
+\textbf{Thunder Client} & API testing \\
+\textbf{Todo Tree} & Track TODOs \\
+\end{longtable}
+
+\subsection{Installation via CLI}\label{installation-via-cli}
+
+\begin{lstlisting}[language=bash]
+# Install all at once
+code --install-extension svelte.svelte-vscode
+code --install-extension bradlc.vscode-tailwindcss
+code --install-extension esbenp.prettier-vscode
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension usernamehw.errorlens
+code --install-extension eamodio.gitlens
+code --install-extension qwtel.sqlite-viewer
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3.4 Git Configuration}\label{git-configuration}
+
+Version control is essential. Let's set it up properly.
+
+\subsection{Initial Configuration}\label{initial-configuration}
+
+\begin{lstlisting}[language=bash]
+# Set your identity
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+# Better defaults
+git config --global init.defaultBranch main
+git config --global pull.rebase true
+git config --global core.autocrlf input  # Linux/Mac
+\end{lstlisting}
+
+\subsection{SSH Key Setup (for GitHub)}\label{ssh-key-setup-for-github}
+
+\begin{lstlisting}[language=bash]
+# Generate SSH key
+ssh-keygen -t ed25519 -C "your@email.com"
+
+# Start SSH agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# Copy public key
+cat ~/.ssh/id_ed25519.pub
+# Paste this in GitHub → Settings → SSH Keys
+\end{lstlisting}
+
+\subsection{Project .gitignore}\label{project-.gitignore}
+
+Create \passthrough{\lstinline!.gitignore!}:
+
+\begin{lstlisting}
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.svelte-kit/
+build/
+dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Databases (optional: you might want to track content.db)
+data/*.db
+data/*.db-wal
+data/*.db-shm
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3.5 Project Initialization}\label{project-initialization}
+
+Let's create our project from scratch.
+
+\subsection{Create Project Directory}\label{create-project-directory}
+
+\begin{lstlisting}[language=bash]
+mkdir afidna
+cd afidna
+\end{lstlisting}
+
+\subsection{Initialize with Bun +
+SvelteKit}\label{initialize-with-bun-sveltekit}
+
+\begin{lstlisting}[language=bash]
+# Create SvelteKit project
+bun create svelte@latest .
+
+# When prompted, choose:
+# - Skeleton project
+# - TypeScript
+# - ESLint: Yes
+# - Prettier: Yes
+# - Playwright: No (we'll add later)
+# - Vitest: No (we'll use Bun's test runner)
+\end{lstlisting}
+
+\subsection{Install Dependencies}\label{install-dependencies}
+
+\begin{lstlisting}[language=bash]
+# Core dependencies
+bun add drizzle-orm better-sqlite3 bcrypt
+
+# Development dependencies
+bun add -d drizzle-kit @types/better-sqlite3 @types/bcrypt
+
+# UI dependencies
+bun add -d tailwindcss @tailwindcss/vite daisyui
+\end{lstlisting}
+
+\subsection{SvelteKit Configuration}\label{sveltekit-configuration}
+
+Update \passthrough{\lstinline!svelte.config.js!}:
+
+\begin{lstlisting}
+import adapter from '@sveltejs/adapter-node';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+    preprocess: vitePreprocess(),
+    kit: {
+        adapter: adapter(),
+        alias: {
+            $components: 'src/lib/components',
+            $server: 'src/lib/server'
+        }
+    }
+};
+
+export default config;
+\end{lstlisting}
+
+\subsection{Tailwind Setup}\label{tailwind-setup}
+
+Create \passthrough{\lstinline!src/app.css!}:
+
+\begin{lstlisting}
+@import 'tailwindcss';
+@plugin 'daisyui';
+
+/* RTL Support */
+[dir="rtl"] {
+    text-align: right;
+}
+
+/* Custom utilities */
+@layer utilities {
+    .card-hover {
+        @apply transition-transform hover:scale-[1.02];
+    }
+}
+\end{lstlisting}
+
+Update \passthrough{\lstinline!vite.config.ts!}:
+
+\begin{lstlisting}
+import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+    plugins: [
+        tailwindcss(),
+        sveltekit()
+    ]
+});
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{3.6 Directory Structure Best
+Practices}\label{directory-structure-best-practices}
+
+Let's organize our project for maintainability.
+
+\subsection{The Complete Structure}\label{the-complete-structure}
+
+\begin{lstlisting}
+afidna/
+├── src/
+│   ├── lib/                      # Shared code
+│   │   ├── components/           # Svelte components
+│   │   │   ├── Navbar.svelte
+│   │   │   ├── Footer.svelte
+│   │   │   ├── VideoPlayer.svelte
+│   │   │   └── Quiz.svelte
+│   │   ├── server/               # Server-only code
+│   │   │   ├── auth.ts           # Authentication logic
+│   │   │   └── db/
+│   │   │       ├── index.ts      # Database connections
+│   │   │       ├── schema.ts     # users.db schema
+│   │   │       └── schema-content.ts
+│   │   ├── stores/               # Svelte stores
+│   │   │   └── user.ts
+│   │   ├── utils/                # Utility functions
+│   │   │   └── format.ts
+│   │   └── theme.ts              # Theme configuration
+│   │
+│   ├── routes/                   # SvelteKit routes
+│   │   ├── +layout.svelte        # Root layout
+│   │   ├── +layout.server.ts     # Layout data
+│   │   ├── +page.svelte          # Homepage
+│   │   ├── +page.server.ts
+│   │   ├── tracks/               # /tracks routes
+│   │   ├── lessons/              # /lessons routes
+│   │   ├── search/               # /search route
+│   │   ├── auth/                 # /auth routes
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   │   └── logout/
+│   │   ├── admin/                # /admin routes
+│   │   │   ├── +page.svelte
+│   │   │   ├── lessons/
+│   │   │   ├── videos/
+│   │   │   └── series/
+│   │   └── api/                  # API routes
+│   │       └── progress/
+│   │
+│   ├── hooks.server.ts           # Server hooks (middleware)
+│   ├── app.html                  # HTML template
+│   ├── app.css                   # Global styles
+│   └── app.d.ts                  # Type declarations
+│
+├── scripts/                      # Management scripts
+│   ├── setup-db.ts               # Create users.db
+│   ├── setup-content.ts          # Create content.db
+│   └── seed-content.ts           # Import content
+│
+├── data/                         # Database files
+│   ├── users.db
+│   └── content.db
+│
+├── raw_content/                  # Content source files
+│   └── content.json
+│
+├── static/                       # Static assets
+│   ├── favicon.png
+│   └── images/
+│
+├── book/                         # This book!
+│
+├── .gitignore
+├── package.json
+├── svelte.config.js
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
+\end{lstlisting}
+
+\subsection{Directory Purposes}\label{directory-purposes}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Directory & Purpose & Access \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!src/lib/components/!} & Reusable UI components &
+Client + Server \\
+\passthrough{\lstinline!src/lib/server/!} & Server-only code & Server
+only \\
+\passthrough{\lstinline!src/lib/stores/!} & Reactive state & Client
+only \\
+\passthrough{\lstinline!src/routes/!} & Pages and API & Both \\
+\passthrough{\lstinline!scripts/!} & CLI utilities & Server only \\
+\passthrough{\lstinline!data/!} & Database files & Server only \\
+\passthrough{\lstinline!static/!} & Static files & Public \\
+\end{longtable}
+
+\subsection{Creating the Structure}\label{creating-the-structure}
+
+\begin{lstlisting}[language=bash]
+# Create all directories
+mkdir -p src/lib/{components,server/db,stores,utils}
+mkdir -p src/routes/{tracks,lessons,search,auth/{login,register,logout}}
+mkdir -p src/routes/admin/{lessons,videos,series}
+mkdir -p src/routes/api/progress
+mkdir -p scripts
+mkdir -p data
+mkdir -p raw_content
+mkdir -p static/images
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Verification Checklist}\label{verification-checklist}
+
+Before moving on, verify your setup:
+
+\begin{lstlisting}[language=bash]
+# Check Bun
+bun --version    # Should be 1.x.x
+
+# Check project runs
+bun run dev      # Should start on localhost:5173
+
+# Check TypeScript
+bun run check    # Should pass
+
+# Check Git
+git status       # Should show your project
+\end{lstlisting}
+
+\subsection{Expected Output}\label{expected-output}
+
+When you run \passthrough{\lstinline!bun run dev!}, you should see:
+
+\begin{lstlisting}
+  VITE v5.x.x  ready in xxx ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary}\label{summary}
+
+In this chapter, we set up:
+
+\begin{itemize}
+\tightlist
+\item
+  ✅ Bun runtime
+\item
+  ✅ VS Code with essential extensions
+\item
+  ✅ Git with proper configuration
+\item
+  ✅ SvelteKit project
+\item
+  ✅ Tailwind CSS + DaisyUI
+\item
+  ✅ Organized directory structure
+\end{itemize}
+
+Our development environment is now ready. In the next part, we'll start
+building the backend --- beginning with database design.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{../part-2/chapter-04-database.md}{Part II →
+Chapter 4: Database Design with SQLite}
+\end{quote}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Quick Reference}\label{quick-reference}
+
+\subsection{Common Commands}\label{common-commands}
+
+\begin{lstlisting}[language=bash]
+# Start development server
+bun run dev
+
+# Type checking
+bun run check
+
+# Format code
+bun run format
+
+# Build for production
+bun run build
+
+# Preview production build
+bun run preview
+\end{lstlisting}
+
+\subsection{Troubleshooting}\label{troubleshooting}
+
+\textbf{Problem}: \passthrough{\lstinline!command not found: bun!}
+\textbf{Solution}: Restart your terminal or run
+\passthrough{\lstinline!source \~/.bashrc!}
+
+\textbf{Problem}: \passthrough{\lstinline!Port 5173 already in use!}
+\textbf{Solution}: Kill the process or use
+\passthrough{\lstinline!bun run dev -- --port 3000!}
+
+\textbf{Problem}: TypeScript errors in editor \textbf{Solution}: Restart
+TypeScript server (Cmd/Ctrl + Shift + P → ``TypeScript: Restart TS
+Server'')

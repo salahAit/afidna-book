@@ -1,0 +1,543 @@
+\chapter{SvelteKit Fundamentals}\label{sveltekit-fundamentals}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{8.1 File-Based Routing}\label{file-based-routing}
+
+SvelteKit uses the file system to define routes.
+
+\subsection{Basic Routing}\label{basic-routing}
+
+\begin{lstlisting}
+src/routes/
+├── +page.svelte           → /
+├── about/
+│   └── +page.svelte       → /about
+├── tracks/
+│   ├── +page.svelte       → /tracks
+│   └── [id]/
+│       └── +page.svelte   → /tracks/:id
+└── lessons/
+    ├── +page.svelte       → /lessons
+    └── [slug]/
+        └── +page.svelte   → /lessons/:slug
+\end{lstlisting}
+
+\subsection{Route Files}\label{route-files}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+File & Purpose \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!+page.svelte!} & The page component \\
+\passthrough{\lstinline!+page.ts!} & Client-side data loading \\
+\passthrough{\lstinline!+page.server.ts!} & Server-side data loading \\
+\passthrough{\lstinline!+layout.svelte!} & Shared layout wrapper \\
+\passthrough{\lstinline!+layout.server.ts!} & Layout data loading \\
+\passthrough{\lstinline!+server.ts!} & API endpoint (no UI) \\
+\passthrough{\lstinline!+error.svelte!} & Error page \\
+\end{longtable}
+
+\subsection{Dynamic Parameters}\label{dynamic-parameters}
+
+\begin{lstlisting}
+// src/routes/tracks/[id]/+page.server.ts
+export async function load({ params }) {
+    // params.id = whatever is in the URL
+    const trackId = params.id; // "hadith"
+    
+    // Fetch track...
+}
+\end{lstlisting}
+
+\subsection{Multiple Parameters}\label{multiple-parameters}
+
+\begin{lstlisting}
+src/routes/[locale]/lessons/[slug]/+page.svelte
+→ /en/lessons/hadith-jibril
+→ params = { locale: 'en', slug: 'hadith-jibril' }
+\end{lstlisting}
+
+\subsection{Optional Parameters}\label{optional-parameters}
+
+\begin{lstlisting}
+src/routes/lessons/[[page]]/+page.svelte
+→ /lessons      → params.page = undefined
+→ /lessons/2    → params.page = '2'
+\end{lstlisting}
+
+\subsection{Rest Parameters}\label{rest-parameters}
+
+\begin{lstlisting}
+src/routes/files/[...path]/+page.svelte
+→ /files/docs/images/photo.png
+→ params.path = 'docs/images/photo.png'
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{8.2 Server vs Client
+Components}\label{server-vs-client-components}
+
+Understanding where code runs is crucial.
+
+\subsection{Server-Only Code}\label{server-only-code}
+
+Files with \passthrough{\lstinline!+page.server.ts!} or in
+\passthrough{\lstinline!$lib/server/!}:
+
+\begin{lstlisting}
+// src/routes/admin/+page.server.ts
+import { db } from '$lib/server/db';  // ✅ Server only
+
+export async function load() {
+    // This runs ONLY on the server
+    const users = db.select().from(users).all();
+    
+    return { users };
+}
+\end{lstlisting}
+
+\subsection{Client Code}\label{client-code}
+
+Regular \passthrough{\lstinline!.svelte!} files:
+
+\begin{lstlisting}
+<!-- src/routes/+page.svelte -->
+<script>
+    // This runs in the browser
+    import { onMount } from 'svelte';
+    
+    onMount(() => {
+        console.log('Browser only!');
+    });
+</script>
+\end{lstlisting}
+
+\subsection{Universal Code}\label{universal-code}
+
+Files with \passthrough{\lstinline!+page.ts!} (no
+\passthrough{\lstinline!.server!}):
+
+\begin{lstlisting}
+// src/routes/+page.ts
+export async function load({ fetch }) {
+    // Runs on server (first load) AND client (navigation)
+    const res = await fetch('/api/data');
+    return { data: await res.json() };
+}
+\end{lstlisting}
+
+\subsection{When to Use Each}\label{when-to-use-each}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Type & Use When \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!+page.server.ts!} & Database queries, secrets,
+auth \\
+\passthrough{\lstinline!+page.ts!} & Public API calls, caching \\
+Component & UI logic, interactivity \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{8.3 Load Functions}\label{load-functions}
+
+Load functions fetch data before rendering.
+
+\subsection{Server Load}\label{server-load}
+
+\begin{lstlisting}
+// src/routes/tracks/+page.server.ts
+import type { PageServerLoad } from './$types';
+import { contentDatabase, tracks } from '$lib/server/db';
+
+export const load: PageServerLoad = async () => {
+    const allTracks = contentDatabase
+        .select()
+        .from(tracks)
+        .orderBy(tracks.order)
+        .all();
+
+    return {
+        tracks: allTracks,
+    };
+};
+\end{lstlisting}
+
+\subsection{Using Load Data}\label{using-load-data}
+
+\begin{lstlisting}
+<!-- src/routes/tracks/+page.svelte -->
+<script lang="ts">
+    import type { PageData } from './$types';
+    
+    let { data }: { data: PageData } = $props();
+    
+    // TypeScript knows data.tracks is Track[]
+</script>
+
+{#each data.tracks as track}
+    <h2>{track.title}</h2>
+{/each}
+\end{lstlisting}
+
+\subsection{Accessing User from
+Locals}\label{accessing-user-from-locals}
+
+\begin{lstlisting}
+// src/routes/dashboard/+page.server.ts
+export const load: PageServerLoad = async ({ locals }) => {
+    // locals.user comes from hooks.server.ts
+    if (!locals.user) {
+        throw redirect(302, '/auth/login');
+    }
+
+    return {
+        user: locals.user,
+    };
+};
+\end{lstlisting}
+
+\subsection{Dependent Data}\label{dependent-data}
+
+\begin{lstlisting}
+// src/routes/lessons/[slug]/+page.server.ts
+export const load: PageServerLoad = async ({ params, locals }) => {
+    // Get lesson
+    const lesson = contentDatabase
+        .select()
+        .from(lessons)
+        .where(eq(lessons.slug, params.slug))
+        .get();
+
+    if (!lesson) {
+        throw error(404, 'Lesson not found');
+    }
+
+    // Get videos for this lesson
+    const lessonVideos = contentDatabase
+        .select()
+        .from(videos)
+        .where(eq(videos.lessonId, lesson.id))
+        .orderBy(videos.order)
+        .all();
+
+    // Get user progress (if logged in)
+    let progress = null;
+    if (locals.user) {
+        progress = db
+            .select()
+            .from(lessonProgress)
+            .where(
+                and(
+                    eq(lessonProgress.userId, locals.user.id),
+                    eq(lessonProgress.lessonId, lesson.id)
+                )
+            )
+            .get();
+    }
+
+    return {
+        lesson,
+        videos: lessonVideos,
+        progress,
+        isAuthenticated: !!locals.user,
+    };
+};
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{8.4 Form Actions}\label{form-actions}
+
+Handle form submissions server-side.
+
+\subsection{Basic Form}\label{basic-form}
+
+\begin{lstlisting}
+<!-- src/routes/auth/login/+page.svelte -->
+<form method="POST">
+    <input type="email" name="email" required />
+    <input type="password" name="password" required />
+    <button type="submit">Login</button>
+</form>
+\end{lstlisting}
+
+\subsection{Action Handler}\label{action-handler}
+
+\begin{lstlisting}
+// src/routes/auth/login/+page.server.ts
+import type { Actions } from './$types';
+import { fail, redirect } from '@sveltejs/kit';
+
+export const actions: Actions = {
+    default: async ({ request, cookies }) => {
+        const form = await request.formData();
+        const email = form.get('email') as string;
+        const password = form.get('password') as string;
+
+        // Validate
+        if (!email || !password) {
+            return fail(400, { 
+                error: 'Email and password required',
+                email, // Return email to repopulate form
+            });
+        }
+
+        // Check user
+        const user = await validateUser(email, password);
+        if (!user) {
+            return fail(400, { 
+                error: 'Invalid credentials',
+                email,
+            });
+        }
+
+        // Create session
+        const { sessionId, expiresAt } = createSession(user.id);
+        setSessionCookie(cookies, sessionId, expiresAt);
+
+        throw redirect(302, '/');
+    }
+};
+\end{lstlisting}
+
+\subsection{Named Actions}\label{named-actions}
+
+\begin{lstlisting}
+<form method="POST" action="?/login">...</form>
+<form method="POST" action="?/register">...</form>
+\end{lstlisting}
+
+\begin{lstlisting}
+export const actions: Actions = {
+    login: async ({ request }) => { /* ... */ },
+    register: async ({ request }) => { /* ... */ },
+};
+\end{lstlisting}
+
+\subsection{Handling Action Results}\label{handling-action-results}
+
+\begin{lstlisting}
+<script lang="ts">
+    import type { ActionData } from './$types';
+    
+    let { form }: { form: ActionData } = $props();
+</script>
+
+{#if form?.error}
+    <div class="alert alert-error">{form.error}</div>
+{/if}
+
+<form method="POST">
+    <input 
+        type="email" 
+        name="email" 
+        value={form?.email ?? ''} 
+    />
+    <!-- ... -->
+</form>
+\end{lstlisting}
+
+\subsection{Progressive Enhancement}\label{progressive-enhancement}
+
+\begin{lstlisting}
+<script>
+    import { enhance } from '$app/forms';
+</script>
+
+<form method="POST" use:enhance>
+    <!-- Works without JS, better with JS -->
+</form>
+\end{lstlisting}
+
+With \passthrough{\lstinline!use:enhance!}: - Form submits via fetch (no
+page reload) - Automatic loading states - Better UX
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{8.5 Error Pages}\label{error-pages}
+
+Handle errors gracefully.
+
+\subsection{Route-Level Error Page}\label{route-level-error-page}
+
+\begin{lstlisting}
+<!-- src/routes/lessons/[slug]/+error.svelte -->
+<script>
+    import { page } from '$app/stores';
+</script>
+
+<div class="error-container">
+    <h1>{$page.status}</h1>
+    <p>{$page.error?.message}</p>
+    <a href="/">Go Home</a>
+</div>
+\end{lstlisting}
+
+\subsection{Global Error Page}\label{global-error-page}
+
+\begin{lstlisting}
+<!-- src/routes/+error.svelte -->
+<script>
+    import { page } from '$app/stores';
+</script>
+
+<div class="min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <h1 class="text-6xl font-bold text-error">
+            {$page.status}
+        </h1>
+        <p class="text-xl mt-4">
+            {#if $page.status === 404}
+                الصفحة غير موجودة
+            {:else if $page.status === 500}
+                حدث خطأ في الخادم
+            {:else}
+                {$page.error?.message}
+            {/if}
+        </p>
+        <a href="/" class="btn btn-primary mt-8">
+            العودة للرئيسية
+        </a>
+    </div>
+</div>
+\end{lstlisting}
+
+\subsection{Throwing Errors in Load}\label{throwing-errors-in-load}
+
+\begin{lstlisting}
+import { error } from '@sveltejs/kit';
+
+export const load: PageServerLoad = async ({ params }) => {
+    const lesson = getLesson(params.slug);
+    
+    if (!lesson) {
+        throw error(404, 'Lesson not found');
+    }
+    
+    if (!lesson.isPublished) {
+        throw error(403, 'This lesson is not available');
+    }
+    
+    return { lesson };
+};
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{8.6 Layout Nesting}\label{layout-nesting}
+
+Share UI across routes with layouts.
+
+\subsection{Root Layout}\label{root-layout}
+
+\begin{lstlisting}
+<!-- src/routes/+layout.svelte -->
+<script>
+    import Navbar from '$lib/components/Navbar.svelte';
+    import Footer from '$lib/components/Footer.svelte';
+    import '../app.css';
+    
+    let { children, data } = $props();
+</script>
+
+<Navbar user={data.user} />
+
+<main class="min-h-screen">
+    {@render children()}
+</main>
+
+<Footer />
+\end{lstlisting}
+
+\subsection{Layout Data}\label{layout-data}
+
+\begin{lstlisting}
+// src/routes/+layout.server.ts
+export async function load({ locals }) {
+    return {
+        user: locals.user,
+    };
+}
+\end{lstlisting}
+
+\subsection{Nested Layouts}\label{nested-layouts}
+
+\begin{lstlisting}
+src/routes/
+├── +layout.svelte          # Root (Navbar, Footer)
+├── admin/
+│   ├── +layout.svelte      # Admin (Sidebar)
+│   ├── +page.svelte        # /admin
+│   └── lessons/
+│       └── +page.svelte    # /admin/lessons
+\end{lstlisting}
+
+\begin{lstlisting}
+<!-- src/routes/admin/+layout.svelte -->
+<script>
+    let { children } = $props();
+</script>
+
+<div class="flex">
+    <aside class="w-64 bg-base-200">
+        <nav>
+            <a href="/admin">Dashboard</a>
+            <a href="/admin/lessons">Lessons</a>
+            <a href="/admin/videos">Videos</a>
+        </nav>
+    </aside>
+    
+    <main class="flex-1 p-8">
+        {@render children()}
+    </main>
+</div>
+\end{lstlisting}
+
+\subsection{Breaking Out of Layout}\label{breaking-out-of-layout}
+
+Use \passthrough{\lstinline!+page@.svelte!} to reset to root:
+
+\begin{lstlisting}
+src/routes/
+├── +layout.svelte          # Has Navbar
+└── auth/
+    └── login/
+        └── +page@.svelte   # No Navbar (uses root HTML only)
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary}\label{summary}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Concept & Key Points \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Routing & File-based, \passthrough{\lstinline![param]!} for dynamic \\
+Load & \passthrough{\lstinline!+page.server.ts!} for data fetching \\
+Actions & Form handling with \passthrough{\lstinline!use:enhance!} \\
+Layouts & Nested, data flows down \\
+Errors & Custom error pages, \passthrough{\lstinline!throw error()!} \\
+\end{longtable}
+
+SvelteKit fundamentals are covered. Next: building beautiful UIs.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{./chapter-09-ui.md}{Chapter 9: UI with
+DaisyUI \& Tailwind}
+\end{quote}

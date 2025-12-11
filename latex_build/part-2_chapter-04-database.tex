@@ -1,0 +1,493 @@
+\chapter{Database Design with SQLite}\label{database-design-with-sqlite}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.1 Why SQLite for
+Production?}\label{why-sqlite-for-production}
+
+SQLite is often dismissed as ``just for prototyping.'' This is a myth.
+
+\subsection{SQLite in Production}\label{sqlite-in-production}
+
+These companies use SQLite in production:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Company & Use Case \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Apple} & Every iPhone, iPad, Mac \\
+\textbf{Airbus} & Flight software \\
+\textbf{Dropbox} & Desktop client \\
+\textbf{WhatsApp} & Message storage \\
+\textbf{Adobe} & Creative Cloud \\
+\end{longtable}
+
+\subsection{The Numbers}\label{the-numbers}
+
+SQLite handles: - \textbf{100,000+} simultaneous readers -
+\textbf{10,000+} writes per second - \textbf{281 TB} maximum database
+size - \textbf{ACID} compliant transactions
+
+\subsection{When NOT to Use SQLite}\label{when-not-to-use-sqlite}
+
+\begin{itemize}
+\tightlist
+\item
+  High-write workloads with many concurrent writers
+\item
+  Need for replication across multiple servers
+\item
+  Very large datasets (\textgreater{} 1TB)
+\item
+  Real-time synchronization requirements
+\end{itemize}
+
+\subsection{When SQLite Shines}\label{when-sqlite-shines}
+
+\begin{itemize}
+\tightlist
+\item
+  Read-heavy workloads (like content delivery)
+\item
+  Single-server deployments
+\item
+  Embedded applications
+\item
+  Simplicity is a priority
+\end{itemize}
+
+Our educational platform is \textbf{read-heavy} (many users reading
+content, few admins writing). SQLite is perfect.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.2 Single File vs Multiple
+Databases}\label{single-file-vs-multiple-databases}
+
+\subsection{The Traditional Approach}\label{the-traditional-approach}
+
+Most applications use one database for everything:
+
+\begin{lstlisting}
+┌─────────────────────────────────┐
+│          single.db              │
+│  ┌─────────┐ ┌─────────┐       │
+│  │ users   │ │ content │       │
+│  └─────────┘ └─────────┘       │
+│  ┌─────────┐ ┌─────────┐       │
+│  │sessions │ │progress │       │
+│  └─────────┘ └─────────┘       │
+└─────────────────────────────────┘
+\end{lstlisting}
+
+\subsection{Our Approach: Multiple
+Databases}\label{our-approach-multiple-databases}
+
+\begin{lstlisting}
+┌──────────────────┐  ┌──────────────────┐
+│    users.db      │  │   content.db     │
+│  ┌─────────┐    │  │  ┌─────────┐    │
+│  │ users   │    │  │  │ tracks  │    │
+│  └─────────┘    │  │  └─────────┘    │
+│  ┌─────────┐    │  │  ┌─────────┐    │
+│  │sessions │    │  │  │ series  │    │
+│  └─────────┘    │  │  └─────────┘    │
+│  ┌─────────┐    │  │  ┌─────────┐    │
+│  │progress │    │  │  │ lessons │    │
+│  └─────────┘    │  │  └─────────┘    │
+└──────────────────┘  └──────────────────┘
+       R/W                  R/O
+\end{lstlisting}
+
+\subsection{Why Separate?}\label{why-separate}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Benefit & Explanation \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Independent Backups} & Backup user data hourly, content
+weekly \\
+\textbf{Easy Updates} & Replace content.db without touching users \\
+\textbf{Clear Ownership} & Content team manages content.db \\
+\textbf{Performance} & Content reads don't lock user writes \\
+\textbf{Security} & Content can be read-only in production \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.3 Schema Design Principles}\label{schema-design-principles}
+
+Good schema design prevents pain later.
+
+\subsection{Principle 1: Use TEXT for IDs (in
+content.db)}\label{principle-1-use-text-for-ids-in-content.db}
+
+\begin{lstlisting}[language=SQL]
+-- Instead of this:
+CREATE TABLE lessons (
+    id INTEGER PRIMARY KEY  -- What is lesson 42?
+);
+
+-- Do this:
+CREATE TABLE lessons (
+    id TEXT PRIMARY KEY     -- lesson "hadith-jibril" is clear
+);
+\end{lstlisting}
+
+\textbf{Why?} Human-readable IDs are: - Self-documenting - Easier to
+debug - URL-friendly (slugs) - Content-addressable
+
+\subsection{Principle 2: Use INTEGER for Auto-Increment (in
+users.db)}\label{principle-2-use-integer-for-auto-increment-in-users.db}
+
+\begin{lstlisting}[language=SQL]
+-- For user-generated data, auto-increment is fine:
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT
+);
+\end{lstlisting}
+
+\textbf{Why?} User IDs don't need to be memorable.
+
+\subsection{Principle 3: Store Timestamps as
+TEXT}\label{principle-3-store-timestamps-as-text}
+
+\begin{lstlisting}[language=SQL]
+-- SQLite has no native date type
+created_at TEXT DEFAULT CURRENT_TIMESTAMP
+-- Stores as: "2024-12-11 20:00:00"
+\end{lstlisting}
+
+\textbf{Why?} ISO 8601 strings are: - Human-readable - Sortable as text
+- Timezone-aware compatible
+
+\subsection{Principle 4: Use INTEGER for
+Booleans}\label{principle-4-use-integer-for-booleans}
+
+\begin{lstlisting}[language=SQL]
+-- SQLite has no native boolean
+is_published INTEGER DEFAULT 0  -- 0 = false, 1 = true
+\end{lstlisting}
+
+\subsection{Principle 5: Store JSON as
+TEXT}\label{principle-5-store-json-as-text}
+
+\begin{lstlisting}[language=SQL]
+-- For complex data like quizzes
+quiz TEXT  -- JSON array of questions
+\end{lstlisting}
+
+\textbf{Parse in application code:}
+
+\begin{lstlisting}
+const questions = JSON.parse(video.quiz || '[]');
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.4 Hierarchical Data
+Modeling}\label{hierarchical-data-modeling}
+
+Our content has a natural hierarchy:
+
+\begin{lstlisting}
+Track (e.g., "Hadith Studies")
+  └── Series (e.g., "40 Nawawi Hadith")
+        └── Lesson (e.g., "Hadith of Jibril")
+              └── Video (e.g., "Part 1: Introduction")
+\end{lstlisting}
+
+\subsection{The Schema}\label{the-schema}
+
+\begin{lstlisting}[language=SQL]
+-- Level 1: Tracks (Learning Paths)
+CREATE TABLE tracks (
+    id TEXT PRIMARY KEY,          -- "hadith"
+    title TEXT NOT NULL,          -- "Hadith Studies"
+    description TEXT,
+    icon TEXT,                    -- "📜"
+    "order" INTEGER DEFAULT 0
+);
+
+-- Level 2: Series (Course Collections)
+CREATE TABLE series (
+    id TEXT PRIMARY KEY,          -- "nawawi-40"
+    track_id TEXT REFERENCES tracks(id),
+    title TEXT NOT NULL,          -- "40 Nawawi Hadith"
+    description TEXT,
+    instructor TEXT,              -- "Sheikh X"
+    thumbnail_url TEXT,
+    "order" INTEGER DEFAULT 0
+);
+
+-- Level 3: Lessons (Individual Classes)
+CREATE TABLE lessons (
+    id TEXT PRIMARY KEY,          -- "hadith-jibril"
+    track_id TEXT REFERENCES tracks(id),
+    series_id TEXT REFERENCES series(id),
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,    -- URL-friendly
+    description TEXT,
+    instructor TEXT,
+    pdf_url TEXT,
+    is_published INTEGER DEFAULT 0,
+    "order" INTEGER DEFAULT 0
+);
+
+-- Level 4: Videos (Lesson Segments)
+CREATE TABLE videos (
+    id TEXT PRIMARY KEY,          -- "hadith-jibril-v1"
+    lesson_id TEXT REFERENCES lessons(id),
+    title TEXT,
+    youtube_id TEXT,              -- YouTube video ID
+    download_url TEXT,            -- Direct download link
+    duration INTEGER,             -- Seconds
+    summary TEXT,
+    quiz TEXT,                    -- JSON array
+    "order" INTEGER DEFAULT 0
+);
+\end{lstlisting}
+
+\subsection{Querying the Hierarchy}\label{querying-the-hierarchy}
+
+\textbf{Get full lesson with related data:}
+
+\begin{lstlisting}
+// Get lesson with track info
+const lesson = db
+    .select()
+    .from(lessons)
+    .leftJoin(tracks, eq(lessons.trackId, tracks.id))
+    .where(eq(lessons.slug, 'hadith-jibril'))
+    .get();
+
+// Get videos for lesson
+const videos = db
+    .select()
+    .from(videos)
+    .where(eq(videos.lessonId, lesson.id))
+    .orderBy(videos.order)
+    .all();
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.5 Audit Trail
+Implementation}\label{audit-trail-implementation}
+
+Track who changed what and when.
+
+\subsection{The Fields}\label{the-fields}
+
+Add these to every content table:
+
+\begin{lstlisting}[language=SQL]
+ALTER TABLE lessons ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE lessons ADD COLUMN updated_at TEXT;
+ALTER TABLE lessons ADD COLUMN last_modified_by TEXT;  -- "script" or user ID
+ALTER TABLE lessons ADD COLUMN is_locked INTEGER DEFAULT 0;
+\end{lstlisting}
+
+\subsection{Complete Table Definition}\label{complete-table-definition}
+
+\begin{lstlisting}[language=SQL]
+CREATE TABLE lessons (
+    -- Core fields
+    id TEXT PRIMARY KEY,
+    track_id TEXT,
+    series_id TEXT,
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    description TEXT,
+    instructor TEXT,
+    pdf_url TEXT,
+    is_published INTEGER DEFAULT 0,
+    "order" INTEGER DEFAULT 0,
+    
+    -- Audit fields
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT,
+    last_modified_by TEXT DEFAULT 'script',
+    is_locked INTEGER DEFAULT 0,
+    
+    -- Foreign keys
+    FOREIGN KEY (track_id) REFERENCES tracks(id),
+    FOREIGN KEY (series_id) REFERENCES series(id)
+);
+\end{lstlisting}
+
+\subsection{Using the Audit Trail}\label{using-the-audit-trail}
+
+\textbf{When updating via script:}
+
+\begin{lstlisting}
+db.update(lessons)
+    .set({
+        title: newTitle,
+        updated_at: new Date().toISOString(),
+        last_modified_by: 'script'
+    })
+    .where(eq(lessons.id, lessonId))
+    .run();
+\end{lstlisting}
+
+\textbf{When updating via admin:}
+
+\begin{lstlisting}
+db.update(lessons)
+    .set({
+        title: newTitle,
+        updated_at: new Date().toISOString(),
+        last_modified_by: userId.toString()  // Human user
+    })
+    .where(eq(lessons.id, lessonId))
+    .run();
+\end{lstlisting}
+
+\textbf{Protecting human edits:}
+
+\begin{lstlisting}
+function shouldUpdate(existing) {
+    // Don't overwrite if locked
+    if (existing.isLocked) return false;
+    
+    // Don't overwrite human edits (unless forced)
+    if (existing.lastModifiedBy !== 'script') {
+        return FORCE_MODE;
+    }
+    
+    return true;
+}
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.6 Indexing Strategies}\label{indexing-strategies}
+
+Indexes speed up queries but slow down writes. Use wisely.
+
+\subsection{When to Index}\label{when-to-index}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Scenario & Index? \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Column in WHERE clause & Yes \\
+Column in JOIN & Yes \\
+Column in ORDER BY & Maybe \\
+Rarely queried column & No \\
+Frequently updated column & Be careful \\
+\end{longtable}
+
+\subsection{Our Indexes}\label{our-indexes}
+
+\begin{lstlisting}[language=SQL]
+-- users.db
+CREATE INDEX idx_sessions_user ON sessions(user_id);
+CREATE INDEX idx_progress_user ON lesson_progress(user_id);
+CREATE INDEX idx_progress_lesson ON lesson_progress(lesson_id);
+
+-- content.db
+CREATE INDEX idx_lessons_track ON lessons(track_id);
+CREATE INDEX idx_lessons_series ON lessons(series_id);
+CREATE INDEX idx_lessons_slug ON lessons(slug);
+CREATE INDEX idx_videos_lesson ON videos(lesson_id);
+CREATE INDEX idx_series_track ON series(track_id);
+\end{lstlisting}
+
+\subsection{Composite Indexes}\label{composite-indexes}
+
+For queries with multiple conditions:
+
+\begin{lstlisting}[language=SQL]
+-- For: WHERE user_id = ? AND lesson_id = ?
+CREATE UNIQUE INDEX idx_progress_user_lesson 
+    ON lesson_progress(user_id, lesson_id);
+\end{lstlisting}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{4.7 WAL Mode and Performance}\label{wal-mode-and-performance}
+
+WAL (Write-Ahead Logging) improves SQLite concurrency.
+
+\subsection{Enabling WAL Mode}\label{enabling-wal-mode}
+
+\begin{lstlisting}
+const db = new Database('data/users.db');
+db.exec('PRAGMA journal_mode = WAL');
+\end{lstlisting}
+
+\subsection{What WAL Does}\label{what-wal-does}
+
+\textbf{Without WAL:} - Readers block writers - Writers block readers -
+Only one writer at a time
+
+\textbf{With WAL:} - Readers never block writers - Writers never block
+readers - Multiple concurrent readers
+
+\subsection{Other Performance PRAGMAs}\label{other-performance-pragmas}
+
+\begin{lstlisting}
+// Apply these at connection time
+db.exec('PRAGMA journal_mode = WAL');       // Enable WAL
+db.exec('PRAGMA busy_timeout = 5000');      // Wait 5s if busy
+db.exec('PRAGMA synchronous = NORMAL');     // Balance safety/speed
+db.exec('PRAGMA foreign_keys = ON');        // Enforce FK constraints
+db.exec('PRAGMA cache_size = -64000');      // 64MB cache
+\end{lstlisting}
+
+\subsection{When to Use WAL}\label{when-to-use-wal}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Scenario & Mode \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Read-heavy (content.db) & WAL \\
+Write-heavy (users.db) & WAL \\
+Single reader/writer & DELETE (default) \\
+Network storage & DELETE (WAL needs local) \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary}\label{summary}
+
+In this chapter, we designed our database architecture:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Aspect & Decision \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Engine & SQLite (production-ready) \\
+Strategy & Dual database (users + content) \\
+IDs & TEXT for content, INTEGER for users \\
+Hierarchy & Tracks → Series → Lessons → Videos \\
+Auditing & created\_at, updated\_at, last\_modified\_by, is\_locked \\
+Performance & WAL mode, strategic indexes \\
+\end{longtable}
+
+Our schema is now ready. In the next chapter, we'll set up Drizzle ORM
+to interact with these databases in a type-safe way.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+\textbf{Next Chapter}: \href{./chapter-05-drizzle.md}{Chapter 5: Drizzle
+ORM Setup}
+\end{quote}
