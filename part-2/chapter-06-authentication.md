@@ -8,16 +8,7 @@ Two main approaches exist for web authentication. Let's compare.
 
 ### JWT (JSON Web Tokens)
 
-```
-┌──────────┐                    ┌──────────┐
-│  Client  │─── Login ────────► │  Server  │
-│          │◄── JWT Token ───── │          │
-│          │                    │          │
-│          │─── Request + JWT ─►│          │
-│          │◄── Response ────── │  (No DB  │
-│          │                    │   check) │
-└──────────┘                    └──────────┘
-```
+![JWT Authentication Flow](../static/images/chapter-06/jwt-flow.png)
 
 **Pros:**
 - Stateless (no database lookup)
@@ -31,16 +22,7 @@ Two main approaches exist for web authentication. Let's compare.
 
 ### Session-Based
 
-```
-┌──────────┐                    ┌──────────┐
-│  Client  │─── Login ────────► │  Server  │
-│          │◄── Session Cookie ─│          │
-│          │                    │          │
-│  (Cookie │─── Request ───────►│  (Check  │
-│  sent    │◄── Response ────── │   DB)    │
-│  auto)   │                    │          │
-└──────────┘                    └──────────┘
-```
+![Session-Based Authentication Flow](../static/images/chapter-06/session-flow.png)
 
 **Pros:**
 - Easy session revocation

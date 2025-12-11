@@ -12,20 +12,7 @@ You've probably heard that "microservices are the future" and "monoliths are dea
 
 **Microservices architecture** means splitting your application into many small, independent services:
 
-```
-                    ┌──────────────┐
-                    │   API Gateway │
-                    └──────┬───────┘
-           ┌───────────────┼───────────────┐
-           │               │               │
-    ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
-    │ Auth Service│ │Content Svc  │ │Progress Svc │
-    └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
-           │               │               │
-    ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
-    │  Users DB   │ │ Content DB  │ │ Progress DB │
-    └─────────────┘ └─────────────┘ └─────────────┘
-```
+![Microservices Architecture](../static/images/chapter-02/microservices.png)
 
 **Advantages:**
 - Independent scaling
@@ -65,24 +52,7 @@ We're going to build what I call a **"Compact Monolith"** — a single, well-str
 - **Simple to scale**: Optimize what matters
 - **Easy to change**: Refactor to microservices later if needed
 
-```
-┌─────────────────────────────────────────────────┐
-│              Compact Monolith                    │
-│                                                  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐        │
-│  │   Auth   │ │ Content  │ │ Progress │        │
-│  │  Module  │ │  Module  │ │  Module  │        │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘        │
-│       │            │            │               │
-│  ┌────┴────────────┴────────────┴────┐         │
-│  │         Shared Data Layer          │         │
-│  └────────────────┬──────────────────┘         │
-└───────────────────┼─────────────────────────────┘
-                    │
-         ┌──────────┴──────────┐
-         │     SQLite DBs      │
-         └─────────────────────┘
-```
+![Compact Monolith Architecture](../static/images/chapter-02/compact-monolith.png)
 
 ### Key Principles
 

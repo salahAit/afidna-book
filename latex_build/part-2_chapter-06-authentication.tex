@@ -8,16 +8,11 @@ Two main approaches exist for web authentication. Let's compare.
 
 \subsection{JWT (JSON Web Tokens)}\label{jwt-json-web-tokens}
 
-\begin{lstlisting}
-┌──────────┐                    ┌──────────┐
-│  Client  │─── Login ────────► │  Server  │
-│          │◄── JWT Token ───── │          │
-│          │                    │          │
-│          │─── Request + JWT ─►│          │
-│          │◄── Response ────── │  (No DB  │
-│          │                    │   check) │
-└──────────┘                    └──────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-06/jwt-flow.png}}
+\caption{JWT Authentication Flow}
+\end{figure}
 
 \textbf{Pros:} - Stateless (no database lookup) - Works across domains -
 Good for APIs
@@ -27,16 +22,11 @@ Security complexity
 
 \subsection{Session-Based}\label{session-based}
 
-\begin{lstlisting}
-┌──────────┐                    ┌──────────┐
-│  Client  │─── Login ────────► │  Server  │
-│          │◄── Session Cookie ─│          │
-│          │                    │          │
-│  (Cookie │─── Request ───────►│  (Check  │
-│  sent    │◄── Response ────── │   DB)    │
-│  auto)   │                    │          │
-└──────────┘                    └──────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-06/session-flow.png}}
+\caption{Session-Based Authentication Flow}
+\end{figure}
 
 \textbf{Pros:} - Easy session revocation - Server controls everything -
 Simple implementation - Better security by default

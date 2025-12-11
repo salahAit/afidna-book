@@ -104,9 +104,17 @@
 
 % Define passthrough and tightlist if not already defined
 \newcommand{\passthrough}[1]{#1}
-\providecommand{\tightlist}{%
+\providecommand{\tightlist}{
   \setlength{\itemsep}{4pt}\setlength{\parskip}{0pt}}
 
 % Spacing for paragraphs
 \setlength{\parskip}{0.8em}
 \setlength{\parindent}{0pt}
+
+% Pandoc image handling
+\providecommand{\pandocbounded}[1]{#1}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}

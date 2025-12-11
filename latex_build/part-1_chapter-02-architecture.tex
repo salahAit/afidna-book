@@ -15,20 +15,11 @@ You've probably heard that ``microservices are the future'' and
 \textbf{Microservices architecture} means splitting your application
 into many small, independent services:
 
-\begin{lstlisting}
-                    ┌──────────────┐
-                    │   API Gateway │
-                    └──────┬───────┘
-           ┌───────────────┼───────────────┐
-           │               │               │
-    ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
-    │ Auth Service│ │Content Svc  │ │Progress Svc │
-    └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
-           │               │               │
-    ┌──────┴──────┐ ┌──────┴──────┐ ┌──────┴──────┐
-    │  Users DB   │ │ Content DB  │ │ Progress DB │
-    └─────────────┘ └─────────────┘ └─────────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-02/microservices.png}}
+\caption{Microservices Architecture}
+\end{figure}
 
 \textbf{Advantages:} - Independent scaling - Technology flexibility -
 Team independence - Fault isolation
@@ -69,24 +60,11 @@ single, well-structured application that's:
   \textbf{Easy to change}: Refactor to microservices later if needed
 \end{itemize}
 
-\begin{lstlisting}
-┌─────────────────────────────────────────────────┐
-│              Compact Monolith                    │
-│                                                  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐        │
-│  │   Auth   │ │ Content  │ │ Progress │        │
-│  │  Module  │ │  Module  │ │  Module  │        │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘        │
-│       │            │            │               │
-│  ┌────┴────────────┴────────────┴────┐         │
-│  │         Shared Data Layer          │         │
-│  └────────────────┬──────────────────┘         │
-└───────────────────┼─────────────────────────────┘
-                    │
-         ┌──────────┴──────────┐
-         │     SQLite DBs      │
-         └─────────────────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-02/compact-monolith.png}}
+\caption{Compact Monolith Architecture}
+\end{figure}
 
 \subsection{Key Principles}\label{key-principles}
 
