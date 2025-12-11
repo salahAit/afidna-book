@@ -359,77 +359,11 @@ Let's organize our project for maintainability.
 
 \subsection{The Complete Structure}\label{the-complete-structure}
 
-\begin{lstlisting}
-afidna/
-├── src/
-│   ├── lib/                      # Shared code
-│   │   ├── components/           # Svelte components
-│   │   │   ├── Navbar.svelte
-│   │   │   ├── Footer.svelte
-│   │   │   ├── VideoPlayer.svelte
-│   │   │   └── Quiz.svelte
-│   │   ├── server/               # Server-only code
-│   │   │   ├── auth.ts           # Authentication logic
-│   │   │   └── db/
-│   │   │       ├── index.ts      # Database connections
-│   │   │       ├── schema.ts     # users.db schema
-│   │   │       └── schema-content.ts
-│   │   ├── stores/               # Svelte stores
-│   │   │   └── user.ts
-│   │   ├── utils/                # Utility functions
-│   │   │   └── format.ts
-│   │   └── theme.ts              # Theme configuration
-│   │
-│   ├── routes/                   # SvelteKit routes
-│   │   ├── +layout.svelte        # Root layout
-│   │   ├── +layout.server.ts     # Layout data
-│   │   ├── +page.svelte          # Homepage
-│   │   ├── +page.server.ts
-│   │   ├── tracks/               # /tracks routes
-│   │   ├── lessons/              # /lessons routes
-│   │   ├── search/               # /search route
-│   │   ├── auth/                 # /auth routes
-│   │   │   ├── login/
-│   │   │   ├── register/
-│   │   │   └── logout/
-│   │   ├── admin/                # /admin routes
-│   │   │   ├── +page.svelte
-│   │   │   ├── lessons/
-│   │   │   ├── videos/
-│   │   │   └── series/
-│   │   └── api/                  # API routes
-│   │       └── progress/
-│   │
-│   ├── hooks.server.ts           # Server hooks (middleware)
-│   ├── app.html                  # HTML template
-│   ├── app.css                   # Global styles
-│   └── app.d.ts                  # Type declarations
-│
-├── scripts/                      # Management scripts
-│   ├── setup-db.ts               # Create users.db
-│   ├── setup-content.ts          # Create content.db
-│   └── seed-content.ts           # Import content
-│
-├── data/                         # Database files
-│   ├── users.db
-│   └── content.db
-│
-├── raw_content/                  # Content source files
-│   └── content.json
-│
-├── static/                       # Static assets
-│   ├── favicon.png
-│   └── images/
-│
-├── book/                         # This book!
-│
-├── .gitignore
-├── package.json
-├── svelte.config.js
-├── tsconfig.json
-├── vite.config.ts
-└── README.md
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-03/file-structure.png}}
+\caption{Project File Structure}
+\end{figure}
 
 \subsection{Directory Purposes}\label{directory-purposes}
 
