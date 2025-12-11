@@ -102,258 +102,258 @@
 \contentsline {subsection}{\numberline {4.3.5}Principle 5: Store JSON as TEXT}{44}{subsection.4.3.5}%
 \contentsline {section}{\numberline {4.4}4.4 Hierarchical Data Modeling}{44}{section.4.4}%
 \contentsline {subsection}{\numberline {4.4.1}The Schema}{44}{subsection.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Querying the Hierarchy}{45}{subsection.4.4.2}%
-\contentsline {section}{\numberline {4.5}4.5 Audit Trail Implementation}{46}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}The Fields}{46}{subsection.4.5.1}%
-\contentsline {subsection}{\numberline {4.5.2}Complete Table Definition}{46}{subsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.5.3}Using the Audit Trail}{46}{subsection.4.5.3}%
-\contentsline {section}{\numberline {4.6}4.6 Indexing Strategies}{47}{section.4.6}%
-\contentsline {subsection}{\numberline {4.6.1}When to Index}{47}{subsection.4.6.1}%
-\contentsline {subsection}{\numberline {4.6.2}Our Indexes}{47}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}Composite Indexes}{48}{subsection.4.6.3}%
-\contentsline {section}{\numberline {4.7}4.7 WAL Mode and Performance}{48}{section.4.7}%
-\contentsline {subsection}{\numberline {4.7.1}Enabling WAL Mode}{48}{subsection.4.7.1}%
-\contentsline {subsection}{\numberline {4.7.2}What WAL Does}{48}{subsection.4.7.2}%
-\contentsline {subsection}{\numberline {4.7.3}Other Performance PRAGMAs}{48}{subsection.4.7.3}%
-\contentsline {subsection}{\numberline {4.7.4}When to Use WAL}{49}{subsection.4.7.4}%
-\contentsline {section}{\numberline {4.8}Summary}{49}{section.4.8}%
-\contentsline {chapter}{\numberline {5}Drizzle ORM Setup}{50}{chapter.5}%
-\contentsline {section}{\numberline {5.1}5.1 Introduction to Drizzle}{50}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Why Drizzle?}{50}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Core Philosophy}{50}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Installation}{50}{subsection.5.1.3}%
-\contentsline {section}{\numberline {5.2}5.2 Schema Definition}{51}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}users.db Schema}{51}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}content.db Schema}{52}{subsection.5.2.2}%
-\contentsline {section}{\numberline {5.3}5.3 Type-Safe Queries}{53}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Basic Select}{53}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Select Specific Columns}{54}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Insert}{54}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Update}{54}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Delete}{54}{subsection.5.3.5}%
-\contentsline {section}{\numberline {5.4}5.4 Migrations Strategy}{55}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Why Not Traditional Migrations?}{55}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Our Approach: Setup Scripts}{55}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}Schema Changes}{56}{subsection.5.4.3}%
-\contentsline {section}{\numberline {5.5}5.5 Connecting Multiple Databases}{56}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Connection Module}{56}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Usage in SvelteKit}{57}{subsection.5.5.2}%
-\contentsline {section}{\numberline {5.6}5.6 Query Optimization}{57}{section.5.6}%
-\contentsline {subsection}{\numberline {5.6.1}Use Specific Selects}{58}{subsection.5.6.1}%
-\contentsline {subsection}{\numberline {5.6.2}Use Limits}{58}{subsection.5.6.2}%
-\contentsline {subsection}{\numberline {5.6.3}Use Joins Instead of N+1}{58}{subsection.5.6.3}%
-\contentsline {subsection}{\numberline {5.6.4}Count Queries}{58}{subsection.5.6.4}%
-\contentsline {subsection}{\numberline {5.6.5}Aggregations}{59}{subsection.5.6.5}%
-\contentsline {section}{\numberline {5.7}Summary}{59}{section.5.7}%
-\contentsline {chapter}{\numberline {6}Authentication System}{60}{chapter.6}%
-\contentsline {section}{\numberline {6.1}6.1 Session-Based vs JWT}{60}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}JWT (JSON Web Tokens)}{60}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Session-Based}{60}{subsection.6.1.2}%
-\contentsline {subsection}{\numberline {6.1.3}Our Choice: Sessions}{60}{subsection.6.1.3}%
-\contentsline {section}{\numberline {6.2}6.2 Password Hashing with Bun.password}{62}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Why Argon2id?}{62}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Implementation}{62}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Usage}{62}{subsection.6.2.3}%
-\contentsline {section}{\numberline {6.3}6.3 Session Management}{63}{section.6.3}%
-\contentsline {subsection}{\numberline {6.3.1}Session Flow}{63}{subsection.6.3.1}%
-\contentsline {subsection}{\numberline {6.3.2}Session Schema}{63}{subsection.6.3.2}%
-\contentsline {subsection}{\numberline {6.3.3}Session Functions}{63}{subsection.6.3.3}%
-\contentsline {section}{\numberline {6.4}6.4 Cookie Security (HttpOnly, SameSite)}{65}{section.6.4}%
-\contentsline {subsection}{\numberline {6.4.1}Cookie Options}{65}{subsection.6.4.1}%
-\contentsline {subsection}{\numberline {6.4.2}Option Explanations}{65}{subsection.6.4.2}%
-\contentsline {section}{\numberline {6.5}6.5 Remember Me Functionality}{65}{section.6.5}%
-\contentsline {subsection}{\numberline {6.5.1}Implementation}{66}{subsection.6.5.1}%
-\contentsline {subsection}{\numberline {6.5.2}Login Form}{66}{subsection.6.5.2}%
-\contentsline {section}{\numberline {6.6}6.6 Role-Based Access Control (RBAC)}{66}{section.6.6}%
-\contentsline {subsection}{\numberline {6.6.1}Roles}{66}{subsection.6.6.1}%
-\contentsline {subsection}{\numberline {6.6.2}Schema}{67}{subsection.6.6.2}%
-\contentsline {subsection}{\numberline {6.6.3}Authorization Helpers}{67}{subsection.6.6.3}%
-\contentsline {subsection}{\numberline {6.6.4}Usage in Load Functions}{67}{subsection.6.6.4}%
-\contentsline {section}{\numberline {6.7}6.7 Protected Routes with Hooks}{68}{section.6.7}%
-\contentsline {subsection}{\numberline {6.7.1}The Hook}{68}{subsection.6.7.1}%
-\contentsline {subsection}{\numberline {6.7.2}Type Definitions}{68}{subsection.6.7.2}%
-\contentsline {subsection}{\numberline {6.7.3}Accessing User in Routes}{69}{subsection.6.7.3}%
-\contentsline {subsection}{\numberline {6.7.4}Layout Data}{69}{subsection.6.7.4}%
-\contentsline {section}{\numberline {6.8}Complete Auth Module}{69}{section.6.8}%
-\contentsline {section}{\numberline {6.9}Summary}{71}{section.6.9}%
-\contentsline {chapter}{\numberline {7}API Design}{72}{chapter.7}%
-\contentsline {section}{\numberline {7.1}7.1 SvelteKit Server Routes}{72}{section.7.1}%
-\contentsline {subsection}{\numberline {7.1.1}Route Types}{72}{subsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.1.2}API Routes Location}{72}{subsection.7.1.2}%
-\contentsline {subsection}{\numberline {7.1.3}Basic Endpoint Structure}{72}{subsection.7.1.3}%
-\contentsline {section}{\numberline {7.2}7.2 RESTful Endpoints}{73}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}HTTP Methods}{73}{subsection.7.2.1}%
-\contentsline {subsection}{\numberline {7.2.2}Progress API Example}{73}{subsection.7.2.2}%
-\contentsline {section}{\numberline {7.3}7.3 Request Validation}{75}{section.7.3}%
-\contentsline {subsection}{\numberline {7.3.1}Manual Validation}{75}{subsection.7.3.1}%
-\contentsline {subsection}{\numberline {7.3.2}Validation Helper}{76}{subsection.7.3.2}%
-\contentsline {section}{\numberline {7.4}7.4 Error Handling}{76}{section.7.4}%
-\contentsline {subsection}{\numberline {7.4.1}Error Response Format}{76}{subsection.7.4.1}%
-\contentsline {subsection}{\numberline {7.4.2}Error Responses}{77}{subsection.7.4.2}%
-\contentsline {subsection}{\numberline {7.4.3}Try-Catch Wrapper}{77}{subsection.7.4.3}%
-\contentsline {section}{\numberline {7.5}7.5 Rate Limiting}{78}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Simple In-Memory Rate Limiter}{78}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}Usage in Hooks}{79}{subsection.7.5.2}%
-\contentsline {section}{\numberline {7.6}7.6 CORS Configuration}{79}{section.7.6}%
-\contentsline {subsection}{\numberline {7.6.1}When You Need CORS}{79}{subsection.7.6.1}%
-\contentsline {subsection}{\numberline {7.6.2}SvelteKit CORS}{80}{subsection.7.6.2}%
-\contentsline {subsection}{\numberline {7.6.3}For Our Platform}{80}{subsection.7.6.3}%
-\contentsline {section}{\numberline {7.7}API Summary}{80}{section.7.7}%
-\contentsline {section}{\numberline {7.8}Summary}{81}{section.7.8}%
-\contentsline {chapter}{\numberline {8}SvelteKit Fundamentals}{82}{chapter.8}%
-\contentsline {section}{\numberline {8.1}8.1 File-Based Routing}{82}{section.8.1}%
-\contentsline {subsection}{\numberline {8.1.1}Basic Routing}{82}{subsection.8.1.1}%
-\contentsline {subsection}{\numberline {8.1.2}Route Files}{82}{subsection.8.1.2}%
-\contentsline {subsection}{\numberline {8.1.3}Dynamic Parameters}{83}{subsection.8.1.3}%
-\contentsline {subsection}{\numberline {8.1.4}Multiple Parameters}{83}{subsection.8.1.4}%
-\contentsline {subsection}{\numberline {8.1.5}Optional Parameters}{83}{subsection.8.1.5}%
-\contentsline {subsection}{\numberline {8.1.6}Rest Parameters}{83}{subsection.8.1.6}%
-\contentsline {section}{\numberline {8.2}8.2 Server vs Client Components}{83}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Server-Only Code}{83}{subsection.8.2.1}%
-\contentsline {subsection}{\numberline {8.2.2}Client Code}{84}{subsection.8.2.2}%
-\contentsline {subsection}{\numberline {8.2.3}Universal Code}{84}{subsection.8.2.3}%
-\contentsline {subsection}{\numberline {8.2.4}When to Use Each}{84}{subsection.8.2.4}%
-\contentsline {section}{\numberline {8.3}8.3 Load Functions}{84}{section.8.3}%
-\contentsline {subsection}{\numberline {8.3.1}Server Load}{85}{subsection.8.3.1}%
-\contentsline {subsection}{\numberline {8.3.2}Using Load Data}{85}{subsection.8.3.2}%
-\contentsline {subsection}{\numberline {8.3.3}Accessing User from Locals}{85}{subsection.8.3.3}%
-\contentsline {subsection}{\numberline {8.3.4}Dependent Data}{85}{subsection.8.3.4}%
-\contentsline {section}{\numberline {8.4}8.4 Form Actions}{86}{section.8.4}%
-\contentsline {subsection}{\numberline {8.4.1}Basic Form}{86}{subsection.8.4.1}%
-\contentsline {subsection}{\numberline {8.4.2}Action Handler}{87}{subsection.8.4.2}%
-\contentsline {subsection}{\numberline {8.4.3}Named Actions}{87}{subsection.8.4.3}%
-\contentsline {subsection}{\numberline {8.4.4}Handling Action Results}{87}{subsection.8.4.4}%
-\contentsline {subsection}{\numberline {8.4.5}Progressive Enhancement}{88}{subsection.8.4.5}%
-\contentsline {section}{\numberline {8.5}8.5 Error Pages}{88}{section.8.5}%
-\contentsline {subsection}{\numberline {8.5.1}Route-Level Error Page}{88}{subsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.5.2}Global Error Page}{88}{subsection.8.5.2}%
-\contentsline {subsection}{\numberline {8.5.3}Throwing Errors in Load}{89}{subsection.8.5.3}%
-\contentsline {section}{\numberline {8.6}8.6 Layout Nesting}{89}{section.8.6}%
-\contentsline {subsection}{\numberline {8.6.1}Root Layout}{89}{subsection.8.6.1}%
-\contentsline {subsection}{\numberline {8.6.2}Layout Data}{90}{subsection.8.6.2}%
-\contentsline {subsection}{\numberline {8.6.3}Nested Layouts}{90}{subsection.8.6.3}%
-\contentsline {subsection}{\numberline {8.6.4}Breaking Out of Layout}{91}{subsection.8.6.4}%
-\contentsline {section}{\numberline {8.7}Summary}{91}{section.8.7}%
-\contentsline {chapter}{\numberline {9}UI with DaisyUI \& Tailwind}{92}{chapter.9}%
-\contentsline {section}{\numberline {9.1}9.1 Setting Up Tailwind CSS 4}{92}{section.9.1}%
-\contentsline {subsection}{\numberline {9.1.1}Installation}{92}{subsection.9.1.1}%
-\contentsline {subsection}{\numberline {9.1.2}Vite Configuration}{92}{subsection.9.1.2}%
-\contentsline {subsection}{\numberline {9.1.3}CSS Entry Point}{92}{subsection.9.1.3}%
-\contentsline {subsection}{\numberline {9.1.4}Import in Layout}{92}{subsection.9.1.4}%
-\contentsline {subsection}{\numberline {9.1.5}Tailwind Basics}{93}{subsection.9.1.5}%
-\contentsline {section}{\numberline {9.2}9.2 DaisyUI Components}{93}{section.9.2}%
-\contentsline {subsection}{\numberline {9.2.1}Installation}{93}{subsection.9.2.1}%
-\contentsline {subsection}{\numberline {9.2.2}Configuration}{93}{subsection.9.2.2}%
-\contentsline {subsection}{\numberline {9.2.3}Core Components}{93}{subsection.9.2.3}%
-\contentsline {section}{\numberline {9.3}9.3 Theme System (Light/Dark)}{95}{section.9.3}%
-\contentsline {subsection}{\numberline {9.3.1}Available Themes}{95}{subsection.9.3.1}%
-\contentsline {subsection}{\numberline {9.3.2}Setting Theme}{95}{subsection.9.3.2}%
-\contentsline {subsection}{\numberline {9.3.3}Dynamic Theme Switching}{95}{subsection.9.3.3}%
-\contentsline {subsection}{\numberline {9.3.4}Initialize Theme}{95}{subsection.9.3.4}%
-\contentsline {section}{\numberline {9.4}9.4 RTL Support for Arabic}{96}{section.9.4}%
-\contentsline {subsection}{\numberline {9.4.1}HTML Direction}{96}{subsection.9.4.1}%
-\contentsline {subsection}{\numberline {9.4.2}Dynamic Direction}{96}{subsection.9.4.2}%
-\contentsline {subsection}{\numberline {9.4.3}RTL Utilities}{96}{subsection.9.4.3}%
-\contentsline {subsection}{\numberline {9.4.4}Logical Properties (CSS)}{96}{subsection.9.4.4}%
-\contentsline {subsection}{\numberline {9.4.5}DaisyUI RTL}{97}{subsection.9.4.5}%
-\contentsline {section}{\numberline {9.5}9.5 Responsive Design Patterns}{97}{section.9.5}%
-\contentsline {subsection}{\numberline {9.5.1}Breakpoints}{97}{subsection.9.5.1}%
-\contentsline {subsection}{\numberline {9.5.2}Common Patterns}{97}{subsection.9.5.2}%
-\contentsline {subsection}{\numberline {9.5.3}Mobile Navigation Pattern}{98}{subsection.9.5.3}%
-\contentsline {section}{\numberline {9.6}9.6 Custom Component Library}{98}{section.9.6}%
-\contentsline {subsection}{\numberline {9.6.1}Button Component}{98}{subsection.9.6.1}%
-\contentsline {subsection}{\numberline {9.6.2}Card Component}{99}{subsection.9.6.2}%
-\contentsline {subsection}{\numberline {9.6.3}Input Component}{100}{subsection.9.6.3}%
-\contentsline {subsection}{\numberline {9.6.4}Usage}{101}{subsection.9.6.4}%
-\contentsline {section}{\numberline {9.7}Summary}{101}{section.9.7}%
-\contentsline {chapter}{\numberline {10}Building Core Pages}{103}{chapter.10}%
-\contentsline {section}{\numberline {10.1}10.1 Homepage with Dynamic Stats}{103}{section.10.1}%
-\contentsline {subsection}{\numberline {10.1.1}Load Function}{103}{subsection.10.1.1}%
-\contentsline {subsection}{\numberline {10.1.2}Homepage Component}{104}{subsection.10.1.2}%
-\contentsline {section}{\numberline {10.2}10.2 Content Listing (Tracks, Lessons)}{106}{section.10.2}%
-\contentsline {subsection}{\numberline {10.2.1}Tracks Listing}{106}{subsection.10.2.1}%
-\contentsline {subsection}{\numberline {10.2.2}Lessons Listing with Search}{107}{subsection.10.2.2}%
-\contentsline {section}{\numberline {10.3}10.3 Detail Pages}{108}{section.10.3}%
-\contentsline {subsection}{\numberline {10.3.1}Single Track Page}{108}{subsection.10.3.1}%
-\contentsline {subsection}{\numberline {10.3.2}Single Lesson Page}{109}{subsection.10.3.2}%
-\contentsline {section}{\numberline {10.4}10.4 Search Functionality}{109}{section.10.4}%
-\contentsline {section}{\numberline {10.5}10.5 User Dashboard}{110}{section.10.5}%
-\contentsline {section}{\numberline {10.6}10.6 Error and 404 Pages}{111}{section.10.6}%
-\contentsline {section}{\numberline {10.7}Summary}{112}{section.10.7}%
-\contentsline {chapter}{\numberline {11}Reusable Components}{113}{chapter.11}%
-\contentsline {section}{\numberline {11.1}11.1 Navbar with Auth State}{113}{section.11.1}%
-\contentsline {section}{\numberline {11.2}11.2 Footer Component}{115}{section.11.2}%
-\contentsline {section}{\numberline {11.3}11.3 Card Components}{116}{section.11.3}%
-\contentsline {subsection}{\numberline {11.3.1}LessonCard}{116}{subsection.11.3.1}%
-\contentsline {subsection}{\numberline {11.3.2}TrackCard}{117}{subsection.11.3.2}%
-\contentsline {section}{\numberline {11.4}11.4 Modal System}{118}{section.11.4}%
-\contentsline {subsection}{\numberline {11.4.1}Usage}{118}{subsection.11.4.1}%
-\contentsline {section}{\numberline {11.5}11.5 Toast Notifications}{119}{section.11.5}%
-\contentsline {subsection}{\numberline {11.5.1}Usage with Store}{120}{subsection.11.5.1}%
-\contentsline {section}{\numberline {11.6}11.6 Loading States}{120}{section.11.6}%
-\contentsline {subsection}{\numberline {11.6.1}Skeleton Loading}{121}{subsection.11.6.1}%
-\contentsline {subsection}{\numberline {11.6.2}Page Loading}{121}{subsection.11.6.2}%
-\contentsline {section}{\numberline {11.7}Summary}{121}{section.11.7}%
-\contentsline {chapter}{\numberline {12}Video Player Integration}{123}{chapter.12}%
-\contentsline {section}{\numberline {12.1}12.1 YouTube IFrame API}{123}{section.12.1}%
-\contentsline {subsection}{\numberline {12.1.1}Loading the API}{123}{subsection.12.1.1}%
-\contentsline {subsection}{\numberline {12.1.2}API Reference}{123}{subsection.12.1.2}%
-\contentsline {section}{\numberline {12.2}12.2 Building VideoPlayer Component}{124}{section.12.2}%
-\contentsline {section}{\numberline {12.3}12.3 Progress Tracking}{126}{section.12.3}%
-\contentsline {subsection}{\numberline {12.3.1}The 10-Minute Rule}{126}{subsection.12.3.1}%
-\contentsline {subsection}{\numberline {12.3.2}Reporting Progress}{126}{subsection.12.3.2}%
-\contentsline {section}{\numberline {12.4}12.4 Handling Events}{126}{section.12.4}%
-\contentsline {section}{\numberline {12.5}12.5-12.7 Advanced Features}{127}{section.12.5}%
-\contentsline {subsection}{\numberline {12.5.1}Quality Selection (handled by YouTube)}{127}{subsection.12.5.1}%
-\contentsline {subsection}{\numberline {12.5.2}Fullscreen Support}{127}{subsection.12.5.2}%
-\contentsline {chapter}{\numberline {13}Interactive Quiz System}{128}{chapter.13}%
-\contentsline {section}{\numberline {13.1}13.1 Quiz Data Structure}{128}{section.13.1}%
-\contentsline {subsection}{\numberline {13.1.1}Storing in Database}{128}{subsection.13.1.1}%
-\contentsline {section}{\numberline {13.2}13.2-13.7 Quiz Component}{128}{section.13.2}%
-\contentsline {chapter}{\numberline {14}Progress Tracking}{130}{chapter.14}%
-\contentsline {section}{\numberline {14.1}14.1-14.6 Progress System}{130}{section.14.1}%
-\contentsline {subsection}{\numberline {14.1.1}Database Schema}{130}{subsection.14.1.1}%
-\contentsline {subsection}{\numberline {14.1.2}UPSERT Logic}{130}{subsection.14.1.2}%
-\contentsline {chapter}{\numberline {15}Global Search}{131}{chapter.15}%
-\contentsline {section}{\numberline {15.1}15.1-15.6 Search Implementation}{131}{section.15.1}%
-\contentsline {subsection}{\numberline {15.1.1}SQLite LIKE Search}{131}{subsection.15.1.1}%
-\contentsline {subsection}{\numberline {15.1.2}Search Page}{131}{subsection.15.1.2}%
-\contentsline {chapter}{\numberline {16}Part V: Admin Panel}{132}{chapter.16}%
-\contentsline {section}{\numberline {16.1}Chapter 16: Admin Dashboard}{132}{section.16.1}%
-\contentsline {subsection}{\numberline {16.1.1}16.1 Access Control}{132}{subsection.16.1.1}%
-\contentsline {subsection}{\numberline {16.1.2}16.2-16.5 Dashboard Implementation}{132}{subsection.16.1.2}%
-\contentsline {section}{\numberline {16.2}Chapter 17: Content Management}{133}{section.16.2}%
-\contentsline {subsection}{\numberline {16.2.1}17.1-17.6 CRUD Operations}{133}{subsection.16.2.1}%
-\contentsline {section}{\numberline {16.3}Chapter 18: Audit \& Protection}{134}{section.16.3}%
-\contentsline {subsection}{\numberline {16.3.1}18.1-18.5 Audit Trail}{134}{subsection.16.3.1}%
-\contentsline {chapter}{\numberline {17}Part VI: Content Pipeline}{135}{chapter.17}%
-\contentsline {section}{\numberline {17.1}Chapter 19: Content Seeding}{135}{section.17.1}%
-\contentsline {subsection}{\numberline {17.1.1}19.1-19.6 Seed Script}{135}{subsection.17.1.1}%
-\contentsline {section}{\numberline {17.2}Chapter 20: Media Management}{135}{section.17.2}%
-\contentsline {subsection}{\numberline {17.2.1}20.1 Hybrid Video Strategy}{136}{subsection.17.2.1}%
-\contentsline {subsection}{\numberline {17.2.2}20.2 Cloudflare R2 Setup}{136}{subsection.17.2.2}%
-\contentsline {subsection}{\numberline {17.2.3}20.3 File Structure}{136}{subsection.17.2.3}%
-\contentsline {subsection}{\numberline {17.2.4}20.4 Database Integration}{136}{subsection.17.2.4}%
-\contentsline {subsection}{\numberline {17.2.5}20.5 No SDK Needed!}{136}{subsection.17.2.5}%
-\contentsline {subsection}{\numberline {17.2.6}20.6 Upload via rclone}{137}{subsection.17.2.6}%
-\contentsline {subsection}{\numberline {17.2.7}20.7 Future: Admin Upload (مؤجل)}{137}{subsection.17.2.7}%
-\contentsline {chapter}{\numberline {18}Part VII: Testing \& Quality}{138}{chapter.18}%
-\contentsline {section}{\numberline {18.1}Chapter 21: Testing Strategy}{138}{section.18.1}%
-\contentsline {subsection}{\numberline {18.1.1}Unit Tests with Bun}{138}{subsection.18.1.1}%
-\contentsline {subsection}{\numberline {18.1.2}Run Tests}{138}{subsection.18.1.2}%
-\contentsline {section}{\numberline {18.2}Chapter 22: Code Quality}{138}{section.18.2}%
-\contentsline {subsection}{\numberline {18.2.1}ESLint + Prettier}{138}{subsection.18.2.1}%
-\contentsline {chapter}{\numberline {19}Part VIII: Deployment}{140}{chapter.19}%
-\contentsline {section}{\numberline {19.1}Chapter 23-26: Production Deployment}{140}{section.19.1}%
-\contentsline {subsection}{\numberline {19.1.1}Build}{140}{subsection.19.1.1}%
-\contentsline {subsection}{\numberline {19.1.2}VPS Deployment}{140}{subsection.19.1.2}%
-\contentsline {subsection}{\numberline {19.1.3}Caddy Config}{140}{subsection.19.1.3}%
-\contentsline {chapter}{\numberline {20}Part IX: Scaling \& Optimization}{141}{chapter.20}%
-\contentsline {section}{\numberline {20.1}Chapter 27-28: Performance}{141}{section.20.1}%
-\contentsline {subsection}{\numberline {20.1.1}Database Optimization}{141}{subsection.20.1.1}%
-\contentsline {subsection}{\numberline {20.1.2}Caching}{141}{subsection.20.1.2}%
-\contentsline {chapter}{\numberline {21}Part X: Appendices}{142}{chapter.21}%
-\contentsline {section}{\numberline {21.1}Appendix A: Code Reference}{142}{section.21.1}%
-\contentsline {section}{\numberline {21.2}Appendix B: Commands}{142}{section.21.2}%
-\contentsline {section}{\numberline {21.3}Appendix C: Troubleshooting}{142}{section.21.3}%
-\contentsline {section}{\numberline {21.4}Appendix D: Resources}{142}{section.21.4}%
+\contentsline {subsection}{\numberline {4.4.2}Querying the Hierarchy}{46}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}4.5 Audit Trail Implementation}{47}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}The Fields}{47}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Complete Table Definition}{47}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Using the Audit Trail}{47}{subsection.4.5.3}%
+\contentsline {section}{\numberline {4.6}4.6 Indexing Strategies}{48}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}When to Index}{48}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Our Indexes}{48}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}Composite Indexes}{49}{subsection.4.6.3}%
+\contentsline {section}{\numberline {4.7}4.7 WAL Mode and Performance}{49}{section.4.7}%
+\contentsline {subsection}{\numberline {4.7.1}Enabling WAL Mode}{49}{subsection.4.7.1}%
+\contentsline {subsection}{\numberline {4.7.2}What WAL Does}{49}{subsection.4.7.2}%
+\contentsline {subsection}{\numberline {4.7.3}Other Performance PRAGMAs}{49}{subsection.4.7.3}%
+\contentsline {subsection}{\numberline {4.7.4}When to Use WAL}{50}{subsection.4.7.4}%
+\contentsline {section}{\numberline {4.8}Summary}{50}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Drizzle ORM Setup}{51}{chapter.5}%
+\contentsline {section}{\numberline {5.1}5.1 Introduction to Drizzle}{51}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Why Drizzle?}{51}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Core Philosophy}{51}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Installation}{51}{subsection.5.1.3}%
+\contentsline {section}{\numberline {5.2}5.2 Schema Definition}{52}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}users.db Schema}{52}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}content.db Schema}{53}{subsection.5.2.2}%
+\contentsline {section}{\numberline {5.3}5.3 Type-Safe Queries}{54}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Basic Select}{54}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Select Specific Columns}{55}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Insert}{55}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Update}{55}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Delete}{55}{subsection.5.3.5}%
+\contentsline {section}{\numberline {5.4}5.4 Migrations Strategy}{56}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Why Not Traditional Migrations?}{56}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Our Approach: Setup Scripts}{56}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Schema Changes}{57}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}5.5 Connecting Multiple Databases}{57}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Connection Module}{57}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Usage in SvelteKit}{58}{subsection.5.5.2}%
+\contentsline {section}{\numberline {5.6}5.6 Query Optimization}{58}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Use Specific Selects}{59}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Use Limits}{59}{subsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.6.3}Use Joins Instead of N+1}{59}{subsection.5.6.3}%
+\contentsline {subsection}{\numberline {5.6.4}Count Queries}{59}{subsection.5.6.4}%
+\contentsline {subsection}{\numberline {5.6.5}Aggregations}{60}{subsection.5.6.5}%
+\contentsline {section}{\numberline {5.7}Summary}{60}{section.5.7}%
+\contentsline {chapter}{\numberline {6}Authentication System}{61}{chapter.6}%
+\contentsline {section}{\numberline {6.1}6.1 Session-Based vs JWT}{61}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}JWT (JSON Web Tokens)}{61}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Session-Based}{61}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Our Choice: Sessions}{61}{subsection.6.1.3}%
+\contentsline {section}{\numberline {6.2}6.2 Password Hashing with Bun.password}{63}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Why Argon2id?}{63}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Implementation}{63}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Usage}{63}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}6.3 Session Management}{64}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Session Flow}{64}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Session Schema}{64}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Session Functions}{64}{subsection.6.3.3}%
+\contentsline {section}{\numberline {6.4}6.4 Cookie Security (HttpOnly, SameSite)}{66}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Cookie Options}{66}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Option Explanations}{66}{subsection.6.4.2}%
+\contentsline {section}{\numberline {6.5}6.5 Remember Me Functionality}{66}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Implementation}{67}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Login Form}{67}{subsection.6.5.2}%
+\contentsline {section}{\numberline {6.6}6.6 Role-Based Access Control (RBAC)}{67}{section.6.6}%
+\contentsline {subsection}{\numberline {6.6.1}Roles}{67}{subsection.6.6.1}%
+\contentsline {subsection}{\numberline {6.6.2}Schema}{68}{subsection.6.6.2}%
+\contentsline {subsection}{\numberline {6.6.3}Authorization Helpers}{68}{subsection.6.6.3}%
+\contentsline {subsection}{\numberline {6.6.4}Usage in Load Functions}{68}{subsection.6.6.4}%
+\contentsline {section}{\numberline {6.7}6.7 Protected Routes with Hooks}{69}{section.6.7}%
+\contentsline {subsection}{\numberline {6.7.1}The Hook}{69}{subsection.6.7.1}%
+\contentsline {subsection}{\numberline {6.7.2}Type Definitions}{69}{subsection.6.7.2}%
+\contentsline {subsection}{\numberline {6.7.3}Accessing User in Routes}{70}{subsection.6.7.3}%
+\contentsline {subsection}{\numberline {6.7.4}Layout Data}{70}{subsection.6.7.4}%
+\contentsline {section}{\numberline {6.8}Complete Auth Module}{70}{section.6.8}%
+\contentsline {section}{\numberline {6.9}Summary}{72}{section.6.9}%
+\contentsline {chapter}{\numberline {7}API Design}{73}{chapter.7}%
+\contentsline {section}{\numberline {7.1}7.1 SvelteKit Server Routes}{73}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Route Types}{73}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}API Routes Location}{73}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Basic Endpoint Structure}{73}{subsection.7.1.3}%
+\contentsline {section}{\numberline {7.2}7.2 RESTful Endpoints}{74}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}HTTP Methods}{74}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Progress API Example}{74}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.3}7.3 Request Validation}{76}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Manual Validation}{76}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Validation Helper}{77}{subsection.7.3.2}%
+\contentsline {section}{\numberline {7.4}7.4 Error Handling}{77}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Error Response Format}{77}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Error Responses}{78}{subsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.4.3}Try-Catch Wrapper}{78}{subsection.7.4.3}%
+\contentsline {section}{\numberline {7.5}7.5 Rate Limiting}{79}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Simple In-Memory Rate Limiter}{79}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Usage in Hooks}{80}{subsection.7.5.2}%
+\contentsline {section}{\numberline {7.6}7.6 CORS Configuration}{80}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}When You Need CORS}{80}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}SvelteKit CORS}{81}{subsection.7.6.2}%
+\contentsline {subsection}{\numberline {7.6.3}For Our Platform}{81}{subsection.7.6.3}%
+\contentsline {section}{\numberline {7.7}API Summary}{81}{section.7.7}%
+\contentsline {section}{\numberline {7.8}Summary}{82}{section.7.8}%
+\contentsline {chapter}{\numberline {8}SvelteKit Fundamentals}{83}{chapter.8}%
+\contentsline {section}{\numberline {8.1}8.1 File-Based Routing}{83}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Basic Routing}{83}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Route Files}{83}{subsection.8.1.2}%
+\contentsline {subsection}{\numberline {8.1.3}Dynamic Parameters}{84}{subsection.8.1.3}%
+\contentsline {subsection}{\numberline {8.1.4}Multiple Parameters}{84}{subsection.8.1.4}%
+\contentsline {subsection}{\numberline {8.1.5}Optional Parameters}{84}{subsection.8.1.5}%
+\contentsline {subsection}{\numberline {8.1.6}Rest Parameters}{84}{subsection.8.1.6}%
+\contentsline {section}{\numberline {8.2}8.2 Server vs Client Components}{84}{section.8.2}%
+\contentsline {subsection}{\numberline {8.2.1}Server-Only Code}{84}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.2}Client Code}{85}{subsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.2.3}Universal Code}{85}{subsection.8.2.3}%
+\contentsline {subsection}{\numberline {8.2.4}When to Use Each}{85}{subsection.8.2.4}%
+\contentsline {section}{\numberline {8.3}8.3 Load Functions}{85}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Server Load}{86}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}Using Load Data}{86}{subsection.8.3.2}%
+\contentsline {subsection}{\numberline {8.3.3}Accessing User from Locals}{86}{subsection.8.3.3}%
+\contentsline {subsection}{\numberline {8.3.4}Dependent Data}{86}{subsection.8.3.4}%
+\contentsline {section}{\numberline {8.4}8.4 Form Actions}{87}{section.8.4}%
+\contentsline {subsection}{\numberline {8.4.1}Basic Form}{87}{subsection.8.4.1}%
+\contentsline {subsection}{\numberline {8.4.2}Action Handler}{88}{subsection.8.4.2}%
+\contentsline {subsection}{\numberline {8.4.3}Named Actions}{88}{subsection.8.4.3}%
+\contentsline {subsection}{\numberline {8.4.4}Handling Action Results}{88}{subsection.8.4.4}%
+\contentsline {subsection}{\numberline {8.4.5}Progressive Enhancement}{89}{subsection.8.4.5}%
+\contentsline {section}{\numberline {8.5}8.5 Error Pages}{89}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}Route-Level Error Page}{89}{subsection.8.5.1}%
+\contentsline {subsection}{\numberline {8.5.2}Global Error Page}{89}{subsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.5.3}Throwing Errors in Load}{90}{subsection.8.5.3}%
+\contentsline {section}{\numberline {8.6}8.6 Layout Nesting}{90}{section.8.6}%
+\contentsline {subsection}{\numberline {8.6.1}Root Layout}{90}{subsection.8.6.1}%
+\contentsline {subsection}{\numberline {8.6.2}Layout Data}{91}{subsection.8.6.2}%
+\contentsline {subsection}{\numberline {8.6.3}Nested Layouts}{91}{subsection.8.6.3}%
+\contentsline {subsection}{\numberline {8.6.4}Breaking Out of Layout}{92}{subsection.8.6.4}%
+\contentsline {section}{\numberline {8.7}Summary}{92}{section.8.7}%
+\contentsline {chapter}{\numberline {9}UI with DaisyUI \& Tailwind}{93}{chapter.9}%
+\contentsline {section}{\numberline {9.1}9.1 Setting Up Tailwind CSS 4}{93}{section.9.1}%
+\contentsline {subsection}{\numberline {9.1.1}Installation}{93}{subsection.9.1.1}%
+\contentsline {subsection}{\numberline {9.1.2}Vite Configuration}{93}{subsection.9.1.2}%
+\contentsline {subsection}{\numberline {9.1.3}CSS Entry Point}{93}{subsection.9.1.3}%
+\contentsline {subsection}{\numberline {9.1.4}Import in Layout}{93}{subsection.9.1.4}%
+\contentsline {subsection}{\numberline {9.1.5}Tailwind Basics}{94}{subsection.9.1.5}%
+\contentsline {section}{\numberline {9.2}9.2 DaisyUI Components}{94}{section.9.2}%
+\contentsline {subsection}{\numberline {9.2.1}Installation}{94}{subsection.9.2.1}%
+\contentsline {subsection}{\numberline {9.2.2}Configuration}{94}{subsection.9.2.2}%
+\contentsline {subsection}{\numberline {9.2.3}Core Components}{94}{subsection.9.2.3}%
+\contentsline {section}{\numberline {9.3}9.3 Theme System (Light/Dark)}{96}{section.9.3}%
+\contentsline {subsection}{\numberline {9.3.1}Available Themes}{96}{subsection.9.3.1}%
+\contentsline {subsection}{\numberline {9.3.2}Setting Theme}{96}{subsection.9.3.2}%
+\contentsline {subsection}{\numberline {9.3.3}Dynamic Theme Switching}{96}{subsection.9.3.3}%
+\contentsline {subsection}{\numberline {9.3.4}Initialize Theme}{96}{subsection.9.3.4}%
+\contentsline {section}{\numberline {9.4}9.4 RTL Support for Arabic}{97}{section.9.4}%
+\contentsline {subsection}{\numberline {9.4.1}HTML Direction}{97}{subsection.9.4.1}%
+\contentsline {subsection}{\numberline {9.4.2}Dynamic Direction}{97}{subsection.9.4.2}%
+\contentsline {subsection}{\numberline {9.4.3}RTL Utilities}{97}{subsection.9.4.3}%
+\contentsline {subsection}{\numberline {9.4.4}Logical Properties (CSS)}{97}{subsection.9.4.4}%
+\contentsline {subsection}{\numberline {9.4.5}DaisyUI RTL}{98}{subsection.9.4.5}%
+\contentsline {section}{\numberline {9.5}9.5 Responsive Design Patterns}{98}{section.9.5}%
+\contentsline {subsection}{\numberline {9.5.1}Breakpoints}{98}{subsection.9.5.1}%
+\contentsline {subsection}{\numberline {9.5.2}Common Patterns}{98}{subsection.9.5.2}%
+\contentsline {subsection}{\numberline {9.5.3}Mobile Navigation Pattern}{99}{subsection.9.5.3}%
+\contentsline {section}{\numberline {9.6}9.6 Custom Component Library}{99}{section.9.6}%
+\contentsline {subsection}{\numberline {9.6.1}Button Component}{99}{subsection.9.6.1}%
+\contentsline {subsection}{\numberline {9.6.2}Card Component}{100}{subsection.9.6.2}%
+\contentsline {subsection}{\numberline {9.6.3}Input Component}{101}{subsection.9.6.3}%
+\contentsline {subsection}{\numberline {9.6.4}Usage}{102}{subsection.9.6.4}%
+\contentsline {section}{\numberline {9.7}Summary}{102}{section.9.7}%
+\contentsline {chapter}{\numberline {10}Building Core Pages}{104}{chapter.10}%
+\contentsline {section}{\numberline {10.1}10.1 Homepage with Dynamic Stats}{104}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}Load Function}{104}{subsection.10.1.1}%
+\contentsline {subsection}{\numberline {10.1.2}Homepage Component}{105}{subsection.10.1.2}%
+\contentsline {section}{\numberline {10.2}10.2 Content Listing (Tracks, Lessons)}{107}{section.10.2}%
+\contentsline {subsection}{\numberline {10.2.1}Tracks Listing}{107}{subsection.10.2.1}%
+\contentsline {subsection}{\numberline {10.2.2}Lessons Listing with Search}{108}{subsection.10.2.2}%
+\contentsline {section}{\numberline {10.3}10.3 Detail Pages}{109}{section.10.3}%
+\contentsline {subsection}{\numberline {10.3.1}Single Track Page}{109}{subsection.10.3.1}%
+\contentsline {subsection}{\numberline {10.3.2}Single Lesson Page}{110}{subsection.10.3.2}%
+\contentsline {section}{\numberline {10.4}10.4 Search Functionality}{110}{section.10.4}%
+\contentsline {section}{\numberline {10.5}10.5 User Dashboard}{111}{section.10.5}%
+\contentsline {section}{\numberline {10.6}10.6 Error and 404 Pages}{112}{section.10.6}%
+\contentsline {section}{\numberline {10.7}Summary}{113}{section.10.7}%
+\contentsline {chapter}{\numberline {11}Reusable Components}{114}{chapter.11}%
+\contentsline {section}{\numberline {11.1}11.1 Navbar with Auth State}{114}{section.11.1}%
+\contentsline {section}{\numberline {11.2}11.2 Footer Component}{116}{section.11.2}%
+\contentsline {section}{\numberline {11.3}11.3 Card Components}{117}{section.11.3}%
+\contentsline {subsection}{\numberline {11.3.1}LessonCard}{117}{subsection.11.3.1}%
+\contentsline {subsection}{\numberline {11.3.2}TrackCard}{118}{subsection.11.3.2}%
+\contentsline {section}{\numberline {11.4}11.4 Modal System}{119}{section.11.4}%
+\contentsline {subsection}{\numberline {11.4.1}Usage}{119}{subsection.11.4.1}%
+\contentsline {section}{\numberline {11.5}11.5 Toast Notifications}{120}{section.11.5}%
+\contentsline {subsection}{\numberline {11.5.1}Usage with Store}{121}{subsection.11.5.1}%
+\contentsline {section}{\numberline {11.6}11.6 Loading States}{121}{section.11.6}%
+\contentsline {subsection}{\numberline {11.6.1}Skeleton Loading}{122}{subsection.11.6.1}%
+\contentsline {subsection}{\numberline {11.6.2}Page Loading}{122}{subsection.11.6.2}%
+\contentsline {section}{\numberline {11.7}Summary}{122}{section.11.7}%
+\contentsline {chapter}{\numberline {12}Video Player Integration}{124}{chapter.12}%
+\contentsline {section}{\numberline {12.1}12.1 YouTube IFrame API}{124}{section.12.1}%
+\contentsline {subsection}{\numberline {12.1.1}Loading the API}{124}{subsection.12.1.1}%
+\contentsline {subsection}{\numberline {12.1.2}API Reference}{124}{subsection.12.1.2}%
+\contentsline {section}{\numberline {12.2}12.2 Building VideoPlayer Component}{125}{section.12.2}%
+\contentsline {section}{\numberline {12.3}12.3 Progress Tracking}{127}{section.12.3}%
+\contentsline {subsection}{\numberline {12.3.1}The 10-Minute Rule}{127}{subsection.12.3.1}%
+\contentsline {subsection}{\numberline {12.3.2}Reporting Progress}{127}{subsection.12.3.2}%
+\contentsline {section}{\numberline {12.4}12.4 Handling Events}{127}{section.12.4}%
+\contentsline {section}{\numberline {12.5}12.5-12.7 Advanced Features}{128}{section.12.5}%
+\contentsline {subsection}{\numberline {12.5.1}Quality Selection (handled by YouTube)}{128}{subsection.12.5.1}%
+\contentsline {subsection}{\numberline {12.5.2}Fullscreen Support}{128}{subsection.12.5.2}%
+\contentsline {chapter}{\numberline {13}Interactive Quiz System}{129}{chapter.13}%
+\contentsline {section}{\numberline {13.1}13.1 Quiz Data Structure}{129}{section.13.1}%
+\contentsline {subsection}{\numberline {13.1.1}Storing in Database}{129}{subsection.13.1.1}%
+\contentsline {section}{\numberline {13.2}13.2-13.7 Quiz Component}{129}{section.13.2}%
+\contentsline {chapter}{\numberline {14}Progress Tracking}{131}{chapter.14}%
+\contentsline {section}{\numberline {14.1}14.1-14.6 Progress System}{131}{section.14.1}%
+\contentsline {subsection}{\numberline {14.1.1}Database Schema}{131}{subsection.14.1.1}%
+\contentsline {subsection}{\numberline {14.1.2}UPSERT Logic}{131}{subsection.14.1.2}%
+\contentsline {chapter}{\numberline {15}Global Search}{132}{chapter.15}%
+\contentsline {section}{\numberline {15.1}15.1-15.6 Search Implementation}{132}{section.15.1}%
+\contentsline {subsection}{\numberline {15.1.1}SQLite LIKE Search}{132}{subsection.15.1.1}%
+\contentsline {subsection}{\numberline {15.1.2}Search Page}{132}{subsection.15.1.2}%
+\contentsline {chapter}{\numberline {16}Part V: Admin Panel}{133}{chapter.16}%
+\contentsline {section}{\numberline {16.1}Chapter 16: Admin Dashboard}{133}{section.16.1}%
+\contentsline {subsection}{\numberline {16.1.1}16.1 Access Control}{133}{subsection.16.1.1}%
+\contentsline {subsection}{\numberline {16.1.2}16.2-16.5 Dashboard Implementation}{133}{subsection.16.1.2}%
+\contentsline {section}{\numberline {16.2}Chapter 17: Content Management}{134}{section.16.2}%
+\contentsline {subsection}{\numberline {16.2.1}17.1-17.6 CRUD Operations}{134}{subsection.16.2.1}%
+\contentsline {section}{\numberline {16.3}Chapter 18: Audit \& Protection}{135}{section.16.3}%
+\contentsline {subsection}{\numberline {16.3.1}18.1-18.5 Audit Trail}{135}{subsection.16.3.1}%
+\contentsline {chapter}{\numberline {17}Part VI: Content Pipeline}{136}{chapter.17}%
+\contentsline {section}{\numberline {17.1}Chapter 19: Content Seeding}{136}{section.17.1}%
+\contentsline {subsection}{\numberline {17.1.1}19.1-19.6 Seed Script}{136}{subsection.17.1.1}%
+\contentsline {section}{\numberline {17.2}Chapter 20: Media Management}{136}{section.17.2}%
+\contentsline {subsection}{\numberline {17.2.1}20.1 Hybrid Video Strategy}{137}{subsection.17.2.1}%
+\contentsline {subsection}{\numberline {17.2.2}20.2 Cloudflare R2 Setup}{137}{subsection.17.2.2}%
+\contentsline {subsection}{\numberline {17.2.3}20.3 File Structure}{137}{subsection.17.2.3}%
+\contentsline {subsection}{\numberline {17.2.4}20.4 Database Integration}{137}{subsection.17.2.4}%
+\contentsline {subsection}{\numberline {17.2.5}20.5 No SDK Needed!}{137}{subsection.17.2.5}%
+\contentsline {subsection}{\numberline {17.2.6}20.6 Upload via rclone}{138}{subsection.17.2.6}%
+\contentsline {subsection}{\numberline {17.2.7}20.7 Future: Admin Upload (مؤجل)}{138}{subsection.17.2.7}%
+\contentsline {chapter}{\numberline {18}Part VII: Testing \& Quality}{139}{chapter.18}%
+\contentsline {section}{\numberline {18.1}Chapter 21: Testing Strategy}{139}{section.18.1}%
+\contentsline {subsection}{\numberline {18.1.1}Unit Tests with Bun}{139}{subsection.18.1.1}%
+\contentsline {subsection}{\numberline {18.1.2}Run Tests}{139}{subsection.18.1.2}%
+\contentsline {section}{\numberline {18.2}Chapter 22: Code Quality}{139}{section.18.2}%
+\contentsline {subsection}{\numberline {18.2.1}ESLint + Prettier}{139}{subsection.18.2.1}%
+\contentsline {chapter}{\numberline {19}Part VIII: Deployment}{141}{chapter.19}%
+\contentsline {section}{\numberline {19.1}Chapter 23-26: Production Deployment}{141}{section.19.1}%
+\contentsline {subsection}{\numberline {19.1.1}Build}{141}{subsection.19.1.1}%
+\contentsline {subsection}{\numberline {19.1.2}VPS Deployment}{141}{subsection.19.1.2}%
+\contentsline {subsection}{\numberline {19.1.3}Caddy Config}{141}{subsection.19.1.3}%
+\contentsline {chapter}{\numberline {20}Part IX: Scaling \& Optimization}{142}{chapter.20}%
+\contentsline {section}{\numberline {20.1}Chapter 27-28: Performance}{142}{section.20.1}%
+\contentsline {subsection}{\numberline {20.1.1}Database Optimization}{142}{subsection.20.1.1}%
+\contentsline {subsection}{\numberline {20.1.2}Caching}{142}{subsection.20.1.2}%
+\contentsline {chapter}{\numberline {21}Part X: Appendices}{143}{chapter.21}%
+\contentsline {section}{\numberline {21.1}Appendix A: Code Reference}{143}{section.21.1}%
+\contentsline {section}{\numberline {21.2}Appendix B: Commands}{143}{section.21.2}%
+\contentsline {section}{\numberline {21.3}Appendix C: Troubleshooting}{143}{section.21.3}%
+\contentsline {section}{\numberline {21.4}Appendix D: Resources}{143}{section.21.4}%

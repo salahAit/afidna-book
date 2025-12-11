@@ -141,12 +141,7 @@ const questions = JSON.parse(video.quiz || '[]');
 
 Our content has a natural hierarchy:
 
-```
-Track (e.g., "Hadith Studies")
-  └── Series (e.g., "40 Nawawi Hadith")
-        └── Lesson (e.g., "Hadith of Jibril")
-              └── Video (e.g., "Part 1: Introduction")
-```
+![Content Hierarchy](../static/images/chapter-04/hierarchical-data.png)
 
 ### The Schema
 
