@@ -221,15 +221,8 @@ Even though we're building a monolith, we should design for growth.
 - Simple and effective
 
 **2. Read Replicas**
-```
-┌─────────────┐
-│  Primary DB │ ◄── Writes
-└──────┬──────┘
-       │ Replication
-┌──────┴──────┐
-│   Replica   │ ◄── Reads
-└─────────────┘
-```
+
+![Read Replicas](../static/images/chapter-02/read-replicas.png)
 
 **3. Edge Caching**
 ```

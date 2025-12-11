@@ -71,36 +71,20 @@ Databases}\label{single-file-vs-multiple-databases}
 
 Most applications use one database for everything:
 
-\begin{lstlisting}
-┌─────────────────────────────────┐
-│          single.db              │
-│  ┌─────────┐ ┌─────────┐       │
-│  │ users   │ │ content │       │
-│  └─────────┘ └─────────┘       │
-│  ┌─────────┐ ┌─────────┐       │
-│  │sessions │ │progress │       │
-│  └─────────┘ └─────────┘       │
-└─────────────────────────────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-04/single-db.png}}
+\caption{Traditional Single Database}
+\end{figure}
 
 \subsection{Our Approach: Multiple
 Databases}\label{our-approach-multiple-databases}
 
-\begin{lstlisting}
-┌──────────────────┐  ┌──────────────────┐
-│    users.db      │  │   content.db     │
-│  ┌─────────┐    │  │  ┌─────────┐    │
-│  │ users   │    │  │  │ tracks  │    │
-│  └─────────┘    │  │  └─────────┘    │
-│  ┌─────────┐    │  │  ┌─────────┐    │
-│  │sessions │    │  │  │ series  │    │
-│  └─────────┘    │  │  └─────────┘    │
-│  ┌─────────┐    │  │  ┌─────────┐    │
-│  │progress │    │  │  │ lessons │    │
-│  └─────────┘    │  │  └─────────┘    │
-└──────────────────┘  └──────────────────┘
-       R/W                  R/O
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-04/dual-db.png}}
+\caption{Multiple Databases Strategy}
+\end{figure}
 
 \subsection{Why Separate?}\label{why-separate}
 

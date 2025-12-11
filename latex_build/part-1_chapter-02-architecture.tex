@@ -272,15 +272,11 @@ effective
 
 \textbf{2. Read Replicas}
 
-\begin{lstlisting}
-┌─────────────┐
-│  Primary DB │ ◄── Writes
-└──────┬──────┘
-       │ Replication
-┌──────┴──────┐
-│   Replica   │ ◄── Reads
-└─────────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-02/read-replicas.png}}
+\caption{Read Replicas}
+\end{figure}
 
 \textbf{3. Edge Caching}
 

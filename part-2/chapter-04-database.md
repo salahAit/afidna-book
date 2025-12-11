@@ -50,35 +50,11 @@ Our educational platform is **read-heavy** (many users reading content, few admi
 
 Most applications use one database for everything:
 
-```
-┌─────────────────────────────────┐
-│          single.db              │
-│  ┌─────────┐ ┌─────────┐       │
-│  │ users   │ │ content │       │
-│  └─────────┘ └─────────┘       │
-│  ┌─────────┐ ┌─────────┐       │
-│  │sessions │ │progress │       │
-│  └─────────┘ └─────────┘       │
-└─────────────────────────────────┘
-```
+![Traditional Single Database](../static/images/chapter-04/single-db.png)
 
 ### Our Approach: Multiple Databases
 
-```
-┌──────────────────┐  ┌──────────────────┐
-│    users.db      │  │   content.db     │
-│  ┌─────────┐    │  │  ┌─────────┐    │
-│  │ users   │    │  │  │ tracks  │    │
-│  └─────────┘    │  │  └─────────┘    │
-│  ┌─────────┐    │  │  ┌─────────┐    │
-│  │sessions │    │  │  │ series  │    │
-│  └─────────┘    │  │  └─────────┘    │
-│  ┌─────────┐    │  │  ┌─────────┐    │
-│  │progress │    │  │  │ lessons │    │
-│  └─────────┘    │  │  └─────────┘    │
-└──────────────────┘  └──────────────────┘
-       R/W                  R/O
-```
+![Multiple Databases Strategy](../static/images/chapter-04/dual-db.png)
 
 ### Why Separate?
 

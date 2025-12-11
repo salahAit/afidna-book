@@ -157,38 +157,11 @@ These)}\label{not-required-well-cover-these}
 
 \subsection{High-Level Architecture}\label{high-level-architecture}
 
-\begin{lstlisting}
-┌─────────────────────────────────────────────────────────┐
-│                      Client (Browser)                    │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │  Homepage   │  │   Lessons   │  │    Admin    │     │
-│  └─────────────┘  └─────────────┘  └─────────────┘     │
-└─────────────────────────┬───────────────────────────────┘
-                          │ HTTP/HTTPS
-┌─────────────────────────┴───────────────────────────────┐
-│                    SvelteKit Server                      │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │    Pages    │  │     API     │  │    Auth     │     │
-│  │   (SSR)     │  │  Endpoints  │  │  Middleware │     │
-│  └─────────────┘  └─────────────┘  └─────────────┘     │
-│                          │                               │
-│  ┌───────────────────────┴────────────────────────┐    │
-│  │                 Drizzle ORM                     │    │
-│  └───────────────────────┬────────────────────────┘    │
-└──────────────────────────┼──────────────────────────────┘
-                           │
-      ┌────────────────────┴────────────────────┐
-      │                                          │
-┌─────┴─────┐                            ┌──────┴──────┐
-│ users.db  │                            │ content.db  │
-│ (R/W)     │                            │ (Read-Only) │
-│           │                            │             │
-│ • users   │                            │ • tracks    │
-│ • sessions│                            │ • series    │
-│ • progress│                            │ • lessons   │
-└───────────┘                            │ • videos    │
-                                         └─────────────┘
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-01/high-level-arch.png}}
+\caption{High-Level Architecture}
+\end{figure}
 
 \subsection{Key Design Decisions}\label{key-design-decisions}
 

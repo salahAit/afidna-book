@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 00:36
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 00:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -939,7 +939,14 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 Chapter 1.
 [15
 
-] [16] [17] [18] [19] [20]) (./part-1_chapter-02-architecture.tex [21]
+] [16] [17]
+File: ../static/images/chapter-01/high-level-arch.png Graphic file (type bmp)
+<../static/images/chapter-01/high-level-arch.png>
+
+
+LaTeX Warning: Float too large for page by 29.26753pt on input line 164.
+
+[18] [19] [20]) (./part-1_chapter-02-architecture.tex [21]
 Chapter 2.
 File: ../static/images/chapter-02/microservices.png Graphic file (type bmp)
 <../static/images/chapter-02/microservices.png>
@@ -951,20 +958,27 @@ File: ../static/images/chapter-02/compact-monolith.png Graphic file (type bmp)
  [23] [24] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-[25] [26] [27] [28]) (./part-1_chapter-03-setup.tex [29]
+[25] [26]
+File: ../static/images/chapter-02/read-replicas.png Graphic file (type bmp)
+<../static/images/chapter-02/read-replicas.png>
+
+
+LaTeX Warning: Float too large for page by 29.27379pt on input line 279.
+
+[27] [28] [29]) (./part-1_chapter-03-setup.tex [30]
 Chapter 3.
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-) [30
+) [31
 
-] [31]
-[32] [33] [34] [35] [36] [37] [38] [39]) (./part-2_chapter-04-database.tex
-[40]
+] [32]
+[33] [34] [35] [36] [37] [38] [39] [40]) (./part-2_chapter-04-database.tex
+[41]
 Chapter 4.
-[41
+[42
 
 ]
 Overfull \hbox (1.40681pt too wide) in paragraph at lines 62--64
@@ -973,52 +987,56 @@ ead-heavy \TU/FreeSerif(0)/m/n/12 (many users reading content, few admins writi
 ng). SQLite
  []
 
-[42] [43]
+File: ../static/images/chapter-04/single-db.png Graphic file (type bmp)
+<../static/images/chapter-04/single-db.png>
+File: ../static/images/chapter-04/dual-db.png Graphic file (type bmp)
+<../static/images/chapter-04/dual-db.png>
+[43] [44]
 Missing character: There is no 📜 (U+1F4DC) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[44] [45] [46] [47] [48]) (./part-2_chapter-05-drizzle.tex [49]
+[45] [46] [47] [48] [49]) (./part-2_chapter-05-drizzle.tex [50]
 Chapter 5.
-[50
+[51
 
-] [51] [52] [53] [54]
+] [52] [53] [54] [55]
 Missing character: There is no 🗄 (U+1F5C4) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[55] [56] [57] [58]) (./part-2_chapter-06-authentication.tex [59]
+[56] [57] [58] [59]) (./part-2_chapter-06-authentication.tex [60]
 Chapter 6.
 File: ../static/images/chapter-06/jwt-flow.png Graphic file (type bmp)
 <../static/images/chapter-06/jwt-flow.png>
 File: ../static/images/chapter-06/session-flow.png Graphic file (type bmp)
 <../static/images/chapter-06/session-flow.png>
-[60
+[61
 
-] [61] [62] [63] [64] [65] [66] [67] [68] [69] [70])
-(./part-2_chapter-07-api.tex [71]
+] [62] [63] [64] [65] [66] [67] [68] [69] [70] [71])
+(./part-2_chapter-07-api.tex [72]
 Chapter 7.
-[72
+[73
 
-] [73] [74] [75] [76] [77] [78] [79] [80])
-(./part-3_chapter-08-sveltekit.tex [81]
+] [74] [75] [76] [77] [78] [79] [80] [81])
+(./part-3_chapter-08-sveltekit.tex [82]
 Chapter 8.
-[82
+[83
 
-] [83] [84] [85] [86] [87] [88] [89] [90]) (./part-3_chapter-09-ui.tex
-[91]
+] [84] [85] [86] [87] [88] [89] [90] [91]) (./part-3_chapter-09-ui.tex
+[92]
 Chapter 9.
-[92
+[93
 
 ] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) [93] [94]
+) [94] [95]
 Missing character: There is no 🌙 (U+1F319) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[95] [96] [97] [98] [99] [100] [101]) (./part-3_chapter-10-pages.tex [102]
+[96] [97] [98] [99] [100] [101] [102]) (./part-3_chapter-10-pages.tex [103]
 Chapter 10.
-[103
+[104
 
-] [104]
+] [105]
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
 Missing character: There is no 📂 (U+1F4C2) in font FreeMono/OT:script=latn;lang
@@ -1027,53 +1045,53 @@ Missing character: There is no 📝 (U+1F4DD) in font FreeMono/OT:script=latn;la
 uage=dflt;!
 Missing character: There is no 🎬 (U+1F3AC) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[105]
+[106]
 Missing character: There is no 👨 (U+1F468) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
 Missing character: There is no 🏫 (U+1F3EB) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[106] [107]
+[107] [108]
 Missing character: There is no 😕 (U+1F615) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[108] [109] [110]
+[109] [110] [111]
 Missing character: There is no 🔍 (U+1F50D) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[111]) (./part-3_chapter-11-components.tex [112]
+[112]) (./part-3_chapter-11-components.tex [113]
 Chapter 11.
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[113
+[114
 
 ]
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[114] [115]
+[115] [116]
 Missing character: There is no 𝕏 (U+1D54F) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[116]
+[117]
 Missing character: There is no 👨 (U+1F468) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
 Missing character: There is no 🏫 (U+1F3EB) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[117] [118] [119] [120] [121]) (./part-4_chapters-12-15-advanced.tex [122]
+[118] [119] [120] [121] [122]) (./part-4_chapters-12-15-advanced.tex [123]
 Chapter 12.
-[123
+[124
 
-] [124] [125] [126] [127]
+] [125] [126] [127] [128]
 Chapter 13.
-[128
+[129
 
-] [129]
+] [130]
 Chapter 14.
-[130
+[131
 
 ]
 Chapter 15.
-) (./part-5-10_chapters-16-28-remaining.tex [131
+) (./part-5-10_chapters-16-28-remaining.tex [132
 
 ]
 Chapter 16.
-[132
+[133
 
 ]
 Missing character: There is no 📝 (U+1F4DD) in font FreeMono/OT:script=latn;lang
@@ -1084,11 +1102,11 @@ Missing character: There is no 📂 (U+1F4C2) in font FreeMono/OT:script=latn;la
 uage=dflt;!
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[133] [134]
+[134] [135]
 Chapter 17.
-[135
+[136
 
-] [136]
+] [137]
 Missing character: There is no م (U+0645) in font FreeSans Bold/OT:script=latn;
 language=dflt;mapping=tex-text;!
 Missing character: There is no ؤ (U+0624) in font FreeSans Bold/OT:script=latn;
@@ -1097,26 +1115,26 @@ Missing character: There is no ج (U+062C) in font FreeSans Bold/OT:script=latn;
 language=dflt;mapping=tex-text;!
 Missing character: There is no ل (U+0644) in font FreeSans Bold/OT:script=latn;
 language=dflt;mapping=tex-text;!
-[137]
+[138]
 Chapter 18.
-[138
+[139
 
-] [139]
+] [140]
 Chapter 19.
-[140
-
-]
-Chapter 20.
 [141
 
 ]
-Chapter 21.
+Chapter 20.
 [142
+
+]
+Chapter 21.
+[143
 
 ]
 Missing character: There is no 🚀 (U+1F680) in font FreeSans/OT:script=latn;lang
 uage=dflt;mapping=tex-text;!
-) [143] (./main.aux)
+) [144] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1127,12 +1145,12 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 26207 strings out of 474878
- 518116 string characters out of 5762516
+ 26236 strings out of 474878
+ 519713 string characters out of 5762516
  2755627 words of memory out of 5000000
- 47806 multiletter control sequences out of 15000+600000
+ 47829 multiletter control sequences out of 15000+600000
  563453 words of font info for 104 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  88i,13n,96p,468b,1980s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (144 pages).
+Output written on main.pdf (145 pages).
