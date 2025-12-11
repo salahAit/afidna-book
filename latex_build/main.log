@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  11 DEC 2025 22:21
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 00:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,17 +919,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 
 Package hyperref Info: Link coloring ON on input line 3.
 \c@lstlisting=\count327
-(./titlepage.tex
-! Undefined control sequence.
-l.8             \HUGE
-                     
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[1
+(./titlepage.tex [1
 
 ]) (./main.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -940,12 +930,12 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 2.
  [1
 
-] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13])
+] [2] [3] [4] [5] [6] [7] [8] [9] [10]
+[11] [12] [13])
 \tf@toc=\write4
 \openout4 = `main.toc'.
 
-
-[14] (./part-1_chapter-01-introduction.tex
+ [14] (./part-1_chapter-01-introduction.tex
 Chapter 1.
 [15
 
@@ -966,14 +956,10 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) [30
 
 ] [31]
-[32] [33] [34] [35] [36]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 3.4 on input line 433.
-
-[37] [38]) (./part-2_chapter-04-database.tex [39]
+[32] [33] [34] [35] [36] [37] [38] [39]) (./part-2_chapter-04-database.tex
+[40]
 Chapter 4.
-[40
+[41
 
 ]
 Overfull \hbox (1.40681pt too wide) in paragraph at lines 62--64
@@ -982,79 +968,48 @@ ead-heavy \TU/FreeSerif(0)/m/n/12 (many users reading content, few admins writi
 ng). SQLite
  []
 
-[41] [42]
+[42] [43]
 Missing character: There is no 📜 (U+1F4DC) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[43] [44] [45] [46] [47]) (./part-2_chapter-05-drizzle.tex [48]
+[44] [45] [46] [47] [48]) (./part-2_chapter-05-drizzle.tex [49]
 Chapter 5.
-[49
+[50
 
-] [50] [51] [52] [53]
+] [51] [52] [53] [54]
 Missing character: There is no 🗄 (U+1F5C4) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[54] [55] [56] [57]) (./part-2_chapter-06-authentication.tex [58]
+[55] [56] [57] [58]) (./part-2_chapter-06-authentication.tex [59]
 Chapter 6.
-[59
+[60
 
-] [60] [61] [62] [63]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.2 on input line 281.
-
-[64]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.3 on input line 350.
-
-[65] [66] [67] [68]) (./part-2_chapter-07-api.tex [69]
+] [61] [62] [63] [64] [65] [66] [67] [68] [69]) (./part-2_chapter-07-api.tex [7
+0]
 Chapter 7.
+[71
 
-Package longtable Warning: Column widths have changed
-(longtable)                in table 7.1 on input line 22.
-
-[70
-
-] [71] [72] [73] [74] [75] [76] [77] [78])
-(./part-3_chapter-08-sveltekit.tex [79]
+] [72] [73] [74] [75] [76] [77] [78] [79])
+(./part-3_chapter-08-sveltekit.tex [80]
 Chapter 8.
+[81
 
-Package longtable Warning: Column widths have changed
-(longtable)                in table 8.1 on input line 42.
-
-[80
-
-] [81]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 8.2 on input line 147.
-
-[82] [83] [84] [85] [86] [87] [88]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 8.3 on input line 534.
-
-) (./part-3_chapter-09-ui.tex [89]
+] [82] [83] [84] [85] [86] [87] [88] [89]) (./part-3_chapter-09-ui.tex
+[90]
 Chapter 9.
-[90
+[91
 
 ] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) [91] [92]
+) [92] [93]
 Missing character: There is no 🌙 (U+1F319) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[93] [94] [95] [96] [97] [98]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 9.2 on input line 554.
-
-[99]) (./part-3_chapter-10-pages.tex [100]
+[94] [95] [96] [97] [98] [99] [100]) (./part-3_chapter-10-pages.tex [101]
 Chapter 10.
-[101
+[102
 
-] [102]
+] [103]
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
 Missing character: There is no 📂 (U+1F4C2) in font FreeMono/OT:script=latn;lang
@@ -1063,53 +1018,53 @@ Missing character: There is no 📝 (U+1F4DD) in font FreeMono/OT:script=latn;la
 uage=dflt;!
 Missing character: There is no 🎬 (U+1F3AC) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[103]
+[104]
 Missing character: There is no 👨 (U+1F468) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
 Missing character: There is no 🏫 (U+1F3EB) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[104] [105]
+[105] [106]
 Missing character: There is no 😕 (U+1F615) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[106] [107] [108]
+[107] [108] [109]
 Missing character: There is no 🔍 (U+1F50D) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[109]) (./part-3_chapter-11-components.tex [110]
+[110]) (./part-3_chapter-11-components.tex [111]
 Chapter 11.
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[111
+[112
 
 ]
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[112] [113]
+[113] [114]
 Missing character: There is no 𝕏 (U+1D54F) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[114]
+[115]
 Missing character: There is no 👨 (U+1F468) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
 Missing character: There is no 🏫 (U+1F3EB) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[115] [116] [117] [118] [119]) (./part-4_chapters-12-15-advanced.tex [120]
+[116] [117] [118] [119] [120]) (./part-4_chapters-12-15-advanced.tex [121]
 Chapter 12.
-[121
+[122
 
-] [122] [123] [124] [125]
+] [123] [124] [125] [126]
 Chapter 13.
-[126
+[127
 
-] [127]
+] [128]
 Chapter 14.
-[128
+[129
 
 ]
 Chapter 15.
-) (./part-5-10_chapters-16-28-remaining.tex [129
+) (./part-5-10_chapters-16-28-remaining.tex [130
 
 ]
 Chapter 16.
-[130
+[131
 
 ]
 Missing character: There is no 📝 (U+1F4DD) in font FreeMono/OT:script=latn;lang
@@ -1120,38 +1075,39 @@ Missing character: There is no 📂 (U+1F4C2) in font FreeMono/OT:script=latn;la
 uage=dflt;!
 Missing character: There is no 📚 (U+1F4DA) in font FreeMono/OT:script=latn;lang
 uage=dflt;!
-[131] [132]
+[132] [133]
 Chapter 17.
-[133
+[134
 
-] [134]
+] [135]
+Missing character: There is no م (U+0645) in font FreeSans Bold/OT:script=latn;
+language=dflt;mapping=tex-text;!
+Missing character: There is no ؤ (U+0624) in font FreeSans Bold/OT:script=latn;
+language=dflt;mapping=tex-text;!
+Missing character: There is no ج (U+062C) in font FreeSans Bold/OT:script=latn;
+language=dflt;mapping=tex-text;!
+Missing character: There is no ل (U+0644) in font FreeSans Bold/OT:script=latn;
+language=dflt;mapping=tex-text;!
+[136]
 Chapter 18.
-[135
-
-] [136]
-Chapter 19.
 [137
+
+] [138]
+Chapter 19.
+[139
 
 ]
 Chapter 20.
-[138
+[140
 
 ]
 Chapter 21.
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 21.1 on input line 360.
-
-[139
+[141
 
 ]
 Missing character: There is no 🚀 (U+1F680) in font FreeSans/OT:script=latn;lang
 uage=dflt;mapping=tex-text;!
-)
-
-Package longtable Warning: Table widths have changed. Rerun LaTeX.
-
-[140] (./main.aux)
+) [142] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1162,12 +1118,12 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 26129 strings out of 474878
- 515890 string characters out of 5762516
+ 26165 strings out of 474878
+ 516313 string characters out of 5762516
  2755627 words of memory out of 5000000
- 47735 multiletter control sequences out of 15000+600000
- 563396 words of font info for 104 fonts, out of 8000000 for 9000
+ 47771 multiletter control sequences out of 15000+600000
+ 563453 words of font info for 104 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  88i,13n,96p,468b,1980s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (141 pages).
+Output written on main.pdf (143 pages).

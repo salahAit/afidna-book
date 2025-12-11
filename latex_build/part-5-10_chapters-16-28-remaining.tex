@@ -178,24 +178,89 @@ async function seedLesson(lesson, forceMode) {
 \section{Chapter 20: Media
 Management}\label{chapter-20-media-management}
 
-\subsection{R2/S3 Integration (for
-future)}\label{r2s3-integration-for-future}
+\subsection{20.1 Hybrid Video Strategy}\label{hybrid-video-strategy}
+
+We use a \textbf{hybrid approach}: - \textbf{YouTube}: Streaming
+(watching) - free, fast CDN - \textbf{Cloudflare R2}: Download (offline)
+- cheap storage, free egress
+
+\subsection{20.2 Cloudflare R2 Setup}\label{cloudflare-r2-setup}
+
+\textbf{Why R2?} - S3-compatible API - \textbf{Free egress} (no
+bandwidth charges!) - Global CDN via Cloudflare -
+\textasciitilde\$0.015/GB storage
+
+\textbf{Setup Steps:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Create bucket: \passthrough{\lstinline!afidna-assets!}
+\item
+  Enable \textbf{Public Access} or Custom Domain
+\item
+  Get public URL: \passthrough{\lstinline!https://assets.afidna.com!}
+\end{enumerate}
+
+\subsection{20.3 File Structure}\label{file-structure}
 
 \begin{lstlisting}
-// Upload to Cloudflare R2
-async function uploadToR2(file: File, key: string) {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    const response = await fetch(`${R2_ENDPOINT}/${key}`, {
-        method: 'PUT',
-        body: file,
-        headers: {
-            'Authorization': `Bearer ${R2_TOKEN}`,
-        },
+afidna-assets/
+├── videos/{track}/{lesson}/{order}.mp4
+├── pdfs/{track}/{lesson}.pdf
+└── thumbnails/{lesson}.webp
+\end{lstlisting}
+
+\subsection{20.4 Database Integration}\label{database-integration}
+
+\begin{lstlisting}[language=SQL]
+-- videos table stores direct URLs
+downloadUrl = 'https://assets.afidna.com/videos/hadith/jibril/01.mp4'
+
+-- lessons table for PDFs  
+pdfUrl = 'https://assets.afidna.com/pdfs/hadith/jibril.pdf'
+\end{lstlisting}
+
+\subsection{20.5 No SDK Needed!}\label{no-sdk-needed}
+
+For \textbf{public download}, we just store URLs in the database. No
+\passthrough{\lstinline!aws-sdk!} or any library required!
+
+\begin{lstlisting}
+// In content.json
+{
+    "youtubeId": "abc123",       // للمشاهدة
+    "downloadUrl": "https://..."  // للتحميل
+}
+\end{lstlisting}
+
+\subsection{20.6 Upload via rclone}\label{upload-via-rclone}
+
+\begin{lstlisting}[language=bash]
+# Configure rclone for R2
+rclone config
+# Provider: Cloudflare R2
+
+# Upload
+rclone sync ./processed/ r2:afidna-assets/
+\end{lstlisting}
+
+\subsection{20.7 Future: Admin Upload
+(مؤجل)}\label{future-admin-upload-ux645ux624ux62cux644}
+
+Only if you need browser uploads:
+
+\begin{lstlisting}
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+export async function getUploadUrl(key: string) {
+    const command = new PutObjectCommand({
+        Bucket: 'afidna-assets',
+        Key: key,
     });
-    
-    return `${R2_PUBLIC_URL}/${key}`;
+    return getSignedUrl(R2, command, { expiresIn: 3600 });
 }
 \end{lstlisting}
 
