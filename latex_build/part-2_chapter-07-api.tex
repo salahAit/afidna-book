@@ -493,27 +493,13 @@ API consumers - SvelteKit handles everything
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\section{API Summary}\label{api-summary}
+API Summary
 
-Our complete API structure:
-
-\begin{lstlisting}
-/api
-├── /progress                 # Lesson progress
-│   ├── GET ?lessonId=X      # Get progress
-│   └── POST                  # Update progress
-│
-├── /auth
-│   ├── /login
-│   │   └── POST             # Login
-│   ├── /register
-│   │   └── POST             # Register
-│   └── /logout
-│       └── POST             # Logout
-│
-└── /health
-    └── GET                   # Health check
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-07/api-summary.png}}
+\caption{API Structure Overview}
+\end{figure}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 

@@ -198,8 +198,7 @@
 \contentsline {subsection}{\numberline {7.6.1}When You Need CORS}{80}{subsection.7.6.1}%
 \contentsline {subsection}{\numberline {7.6.2}SvelteKit CORS}{81}{subsection.7.6.2}%
 \contentsline {subsection}{\numberline {7.6.3}For Our Platform}{81}{subsection.7.6.3}%
-\contentsline {section}{\numberline {7.7}API Summary}{81}{section.7.7}%
-\contentsline {section}{\numberline {7.8}Summary}{82}{section.7.8}%
+\contentsline {section}{\numberline {7.7}Summary}{81}{section.7.7}%
 \contentsline {chapter}{\numberline {8}SvelteKit Fundamentals}{83}{chapter.8}%
 \contentsline {section}{\numberline {8.1}8.1 File-Based Routing}{83}{section.8.1}%
 \contentsline {subsection}{\numberline {8.1.1}Basic Routing}{83}{subsection.8.1.1}%

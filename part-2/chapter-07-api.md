@@ -475,27 +475,9 @@ We don't need CORS because:
 
 ---
 
-## API Summary
+API Summary
 
-Our complete API structure:
-
-```
-/api
-├── /progress                 # Lesson progress
-│   ├── GET ?lessonId=X      # Get progress
-│   └── POST                  # Update progress
-│
-├── /auth
-│   ├── /login
-│   │   └── POST             # Login
-│   ├── /register
-│   │   └── POST             # Register
-│   └── /logout
-│       └── POST             # Logout
-│
-└── /health
-    └── GET                   # Health check
-```
+![API Structure Overview](../static/images/chapter-07/api-summary.png)
 
 ---
 
