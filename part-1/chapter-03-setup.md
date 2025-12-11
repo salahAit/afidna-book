@@ -236,15 +236,18 @@ bun create svelte@latest .
 ### Install Dependencies
 
 ```bash
-# Core dependencies
-bun add drizzle-orm better-sqlite3 bcrypt
+# Core dependencies (Bun Native - no external SQLite/bcrypt needed!)
+bun add drizzle-orm
 
 # Development dependencies
-bun add -d drizzle-kit @types/better-sqlite3 @types/bcrypt
+bun add -d drizzle-kit @types/bun
 
 # UI dependencies
 bun add -d tailwindcss @tailwindcss/vite daisyui
 ```
+
+> **Note**: We use `bun:sqlite` (built-in) instead of `better-sqlite3`,
+> and `Bun.password` instead of `bcrypt` for 25x faster hashing!
 
 ### SvelteKit Configuration
 
@@ -301,7 +304,20 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
         sveltekit()
-    ]
+    ],
+    server: {
+        fs: {
+            allow: ['.']  // للسماح بقراءة ملفات .db
+        }
+    },
+    optimizeDeps: {
+        exclude: ['bun:sqlite']  // منع Vite من محاولة حزم المكتبة الأصلية
+    },
+    build: {
+        rollupOptions: {
+            external: ['bun:sqlite']  // نفس الشيء عند البناء
+        }
+    }
 });
 ```
 

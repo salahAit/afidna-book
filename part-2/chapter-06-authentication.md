@@ -62,42 +62,43 @@ For our educational platform:
 
 ---
 
-## 6.2 Password Hashing with bcrypt
+## 6.2 Password Hashing with Bun.password
 
 Never store plain passwords. Always hash.
 
-### Why bcrypt?
+### Why Argon2id?
 
 | Algorithm | Security |
 |-----------|----------|
 | MD5 | ❌ Broken |
 | SHA1 | ❌ Broken |
 | SHA256 | ⚠️ Too fast |
-| bcrypt | ✅ Designed for passwords |
-| Argon2 | ✅ Newer, more complex |
+| bcrypt | ✅ Good but slow |
+| **Argon2id** | ✅ Modern, built into Bun! |
 
-bcrypt is:
-- **Slow by design** (prevents brute force)
-- **Salted automatically** (prevents rainbow tables)
-- **Configurable cost** (adjust for hardware)
+Bun's native `Bun.password`:
+- **25x faster** than bcrypt npm package
+- **Argon2id** (memory-hard, GPU-resistant)
+- **Zero dependencies** (native to Bun)
 
 ### Implementation
 
 ```typescript
 // src/lib/server/auth.ts
-import * as bcrypt from 'bcrypt';
-
-const SALT_ROUNDS = 12; // ~0.3s per hash
 
 export async function hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, SALT_ROUNDS);
+    return await Bun.password.hash(password, {
+        algorithm: 'argon2id',
+        memoryCost: 4,
+        timeCost: 3,
+    });
 }
 
 export async function verifyPassword(
     password: string, 
     hash: string
 ): Promise<boolean> {
-    return bcrypt.compare(password, hash);
+    return await Bun.password.verify(password, hash);
 }
 ```
 
@@ -488,25 +489,27 @@ export async function load({ locals }) {
 Here's the full `src/lib/server/auth.ts`:
 
 ```typescript
-import * as bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { db, users, sessions, type User } from '$lib/server/db';
 import { eq, and, gt } from 'drizzle-orm';
 import type { Cookies } from '@sveltejs/kit';
 
 // Configuration
-const SALT_ROUNDS = 12;
 const SESSION_DAYS = 7;
 const REMEMBER_ME_DAYS = 30;
 const COOKIE_NAME = 'session';
 
-// Password hashing
+// Password hashing with Bun.password (Argon2id)
 export async function hashPassword(password: string): Promise<string> {
-    return bcrypt.hash(password, SALT_ROUNDS);
+    return await Bun.password.hash(password, {
+        algorithm: 'argon2id',
+        memoryCost: 4,
+        timeCost: 3,
+    });
 }
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(password, hash);
+    return await Bun.password.verify(password, hash);
 }
 
 // Session management
@@ -572,7 +575,7 @@ export const isEditor = (user: User | null) =>
 | Component | Implementation |
 |-----------|----------------|
 | Strategy | Session-based (simple, secure) |
-| Passwords | bcrypt with salt rounds |
+| Passwords | **Bun.password** with Argon2id |
 | Sessions | UUID in SQLite + HttpOnly cookie |
 | Remember Me | Extended cookie expiry |
 | Roles | user / editor / admin |

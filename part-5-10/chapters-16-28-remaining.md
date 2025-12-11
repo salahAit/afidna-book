@@ -174,23 +174,83 @@ async function seedLesson(lesson, forceMode) {
 
 ## Chapter 20: Media Management
 
-### R2/S3 Integration (for future)
+### 20.1 Hybrid Video Strategy
+
+We use a **hybrid approach**:
+- **YouTube**: Streaming (watching) - free, fast CDN
+- **Cloudflare R2**: Download (offline) - cheap storage, free egress
+
+### 20.2 Cloudflare R2 Setup
+
+**Why R2?**
+- S3-compatible API
+- **Free egress** (no bandwidth charges!)
+- Global CDN via Cloudflare
+- ~$0.015/GB storage
+
+**Setup Steps:**
+
+1. Create bucket: `afidna-assets`
+2. Enable **Public Access** or Custom Domain
+3. Get public URL: `https://assets.afidna.com`
+
+### 20.3 File Structure
+
+```
+afidna-assets/
+├── videos/{track}/{lesson}/{order}.mp4
+├── pdfs/{track}/{lesson}.pdf
+└── thumbnails/{lesson}.webp
+```
+
+### 20.4 Database Integration
+
+```sql
+-- videos table stores direct URLs
+downloadUrl = 'https://assets.afidna.com/videos/hadith/jibril/01.mp4'
+
+-- lessons table for PDFs  
+pdfUrl = 'https://assets.afidna.com/pdfs/hadith/jibril.pdf'
+```
+
+### 20.5 No SDK Needed!
+
+For **public download**, we just store URLs in the database.
+No `aws-sdk` or any library required!
 
 ```typescript
-// Upload to Cloudflare R2
-async function uploadToR2(file: File, key: string) {
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    const response = await fetch(`${R2_ENDPOINT}/${key}`, {
-        method: 'PUT',
-        body: file,
-        headers: {
-            'Authorization': `Bearer ${R2_TOKEN}`,
-        },
+// In content.json
+{
+    "youtubeId": "abc123",       // للمشاهدة
+    "downloadUrl": "https://..."  // للتحميل
+}
+```
+
+### 20.6 Upload via rclone
+
+```bash
+# Configure rclone for R2
+rclone config
+# Provider: Cloudflare R2
+
+# Upload
+rclone sync ./processed/ r2:afidna-assets/
+```
+
+### 20.7 Future: Admin Upload (مؤجل)
+
+Only if you need browser uploads:
+
+```typescript
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+export async function getUploadUrl(key: string) {
+    const command = new PutObjectCommand({
+        Bucket: 'afidna-assets',
+        Key: key,
     });
-    
-    return `${R2_PUBLIC_URL}/${key}`;
+    return getSignedUrl(R2, command, { expiresIn: 3600 });
 }
 ```
 
