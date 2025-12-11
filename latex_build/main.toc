@@ -208,27 +208,27 @@
 \contentsline {subsection}{\numberline {8.1.5}Optional Parameters}{84}{subsection.8.1.5}%
 \contentsline {subsection}{\numberline {8.1.6}Rest Parameters}{84}{subsection.8.1.6}%
 \contentsline {section}{\numberline {8.2}8.2 Server vs Client Components}{84}{section.8.2}%
-\contentsline {subsection}{\numberline {8.2.1}Server-Only Code}{84}{subsection.8.2.1}%
+\contentsline {subsection}{\numberline {8.2.1}Server-Only Code}{85}{subsection.8.2.1}%
 \contentsline {subsection}{\numberline {8.2.2}Client Code}{85}{subsection.8.2.2}%
 \contentsline {subsection}{\numberline {8.2.3}Universal Code}{85}{subsection.8.2.3}%
 \contentsline {subsection}{\numberline {8.2.4}When to Use Each}{85}{subsection.8.2.4}%
-\contentsline {section}{\numberline {8.3}8.3 Load Functions}{85}{section.8.3}%
+\contentsline {section}{\numberline {8.3}8.3 Load Functions}{86}{section.8.3}%
 \contentsline {subsection}{\numberline {8.3.1}Server Load}{86}{subsection.8.3.1}%
 \contentsline {subsection}{\numberline {8.3.2}Using Load Data}{86}{subsection.8.3.2}%
 \contentsline {subsection}{\numberline {8.3.3}Accessing User from Locals}{86}{subsection.8.3.3}%
-\contentsline {subsection}{\numberline {8.3.4}Dependent Data}{86}{subsection.8.3.4}%
+\contentsline {subsection}{\numberline {8.3.4}Dependent Data}{87}{subsection.8.3.4}%
 \contentsline {section}{\numberline {8.4}8.4 Form Actions}{87}{section.8.4}%
 \contentsline {subsection}{\numberline {8.4.1}Basic Form}{87}{subsection.8.4.1}%
 \contentsline {subsection}{\numberline {8.4.2}Action Handler}{88}{subsection.8.4.2}%
 \contentsline {subsection}{\numberline {8.4.3}Named Actions}{88}{subsection.8.4.3}%
-\contentsline {subsection}{\numberline {8.4.4}Handling Action Results}{88}{subsection.8.4.4}%
+\contentsline {subsection}{\numberline {8.4.4}Handling Action Results}{89}{subsection.8.4.4}%
 \contentsline {subsection}{\numberline {8.4.5}Progressive Enhancement}{89}{subsection.8.4.5}%
 \contentsline {section}{\numberline {8.5}8.5 Error Pages}{89}{section.8.5}%
 \contentsline {subsection}{\numberline {8.5.1}Route-Level Error Page}{89}{subsection.8.5.1}%
-\contentsline {subsection}{\numberline {8.5.2}Global Error Page}{89}{subsection.8.5.2}%
+\contentsline {subsection}{\numberline {8.5.2}Global Error Page}{90}{subsection.8.5.2}%
 \contentsline {subsection}{\numberline {8.5.3}Throwing Errors in Load}{90}{subsection.8.5.3}%
-\contentsline {section}{\numberline {8.6}8.6 Layout Nesting}{90}{section.8.6}%
-\contentsline {subsection}{\numberline {8.6.1}Root Layout}{90}{subsection.8.6.1}%
+\contentsline {section}{\numberline {8.6}8.6 Layout Nesting}{91}{section.8.6}%
+\contentsline {subsection}{\numberline {8.6.1}Root Layout}{91}{subsection.8.6.1}%
 \contentsline {subsection}{\numberline {8.6.2}Layout Data}{91}{subsection.8.6.2}%
 \contentsline {subsection}{\numberline {8.6.3}Nested Layouts}{91}{subsection.8.6.3}%
 \contentsline {subsection}{\numberline {8.6.4}Breaking Out of Layout}{92}{subsection.8.6.4}%

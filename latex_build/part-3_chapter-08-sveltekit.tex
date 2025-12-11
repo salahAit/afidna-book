@@ -8,20 +8,11 @@ SvelteKit uses the file system to define routes.
 
 \subsection{Basic Routing}\label{basic-routing}
 
-\begin{lstlisting}
-src/routes/
-├── +page.svelte           → /
-├── about/
-│   └── +page.svelte       → /about
-├── tracks/
-│   ├── +page.svelte       → /tracks
-│   └── [id]/
-│       └── +page.svelte   → /tracks/:id
-└── lessons/
-    ├── +page.svelte       → /lessons
-    └── [slug]/
-        └── +page.svelte   → /lessons/:slug
-\end{lstlisting}
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{../static/images/chapter-08/file-based-routing.png}}
+\caption{SvelteKit Basic Routing}
+\end{figure}
 
 \subsection{Route Files}\label{route-files}
 
