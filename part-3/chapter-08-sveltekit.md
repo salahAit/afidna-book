@@ -8,7 +8,7 @@ SvelteKit uses the file system to define routes.
 
 ### Basic Routing
 
-![SvelteKit Basic Routing](../static/images/chapter-08/file-based-routing.png)
+![SvelteKit Basic Routing](../static/images/chapter-08/file-based-routing.png){width=60%}
 
 ### Route Files
 

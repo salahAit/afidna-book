@@ -196,7 +196,7 @@ We use a **hybrid approach**:
 
 ### 20.3 File Structure
 
-![Cloudflare R2 File Structure](../static/images/chapter-20/r2-file-structure.png)
+![Cloudflare R2 File Structure](../static/images/chapter-20/r2-file-structure.png){width=60%}
 
 ### 20.4 Database Integration
 

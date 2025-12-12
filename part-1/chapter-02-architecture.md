@@ -12,7 +12,7 @@ You've probably heard that "microservices are the future" and "monoliths are dea
 
 **Microservices architecture** means splitting your application into many small, independent services:
 
-![Microservices Architecture](../static/images/chapter-02/microservices.png)
+![Microservices Architecture](../static/images/chapter-02/microservices.png){width=60%}
 
 **Advantages:**
 - Independent scaling
@@ -52,7 +52,7 @@ We're going to build what I call a **"Compact Monolith"** — a single, well-str
 - **Simple to scale**: Optimize what matters
 - **Easy to change**: Refactor to microservices later if needed
 
-![Compact Monolith Architecture](../static/images/chapter-02/compact-monolith.png)
+![Compact Monolith Architecture](../static/images/chapter-02/compact-monolith.png){width=60%}
 
 ### Key Principles
 
@@ -222,7 +222,7 @@ Even though we're building a monolith, we should design for growth.
 
 **2. Read Replicas**
 
-![Read Replicas](../static/images/chapter-02/read-replicas.png)
+![Read Replicas](../static/images/chapter-02/read-replicas.png){width=60%}
 
 **3. Edge Caching**
 ```

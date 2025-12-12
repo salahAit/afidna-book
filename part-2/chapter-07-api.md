@@ -477,7 +477,7 @@ We don't need CORS because:
 
 API Summary
 
-![API Structure Overview](../static/images/chapter-07/api-summary.png)
+![API Structure Overview](../static/images/chapter-07/api-summary.png){width=60%}
 
 ---
 

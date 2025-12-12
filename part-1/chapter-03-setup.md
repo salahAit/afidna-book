@@ -329,7 +329,7 @@ Let's organize our project for maintainability.
 
 ### The Complete Structure
 
-![Project File Structure](../static/images/chapter-03/file-structure.png)
+![Project File Structure](../static/images/chapter-03/file-structure.png){width=60%}
 
 ### Directory Purposes
 

@@ -90,7 +90,7 @@ Before diving in, make sure you have:
 
 ### High-Level Architecture
 
-![High-Level Architecture](../static/images/chapter-01/high-level-arch.png)
+![High-Level Architecture](../static/images/chapter-01/high-level-arch.png){width=60%}
 
 ### Key Design Decisions
 

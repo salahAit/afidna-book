@@ -50,11 +50,11 @@ Our educational platform is **read-heavy** (many users reading content, few admi
 
 Most applications use one database for everything:
 
-![Traditional Single Database](../static/images/chapter-04/single-db.png)
+![Traditional Single Database](../static/images/chapter-04/single-db.png){width=60%}
 
 ### Our Approach: Multiple Databases
 
-![Multiple Databases Strategy](../static/images/chapter-04/dual-db.png)
+![Multiple Databases Strategy](../static/images/chapter-04/dual-db.png){width=60%}
 
 ### Why Separate?
 
@@ -141,7 +141,7 @@ const questions = JSON.parse(video.quiz || '[]');
 
 Our content has a natural hierarchy:
 
-![Content Hierarchy](../static/images/chapter-04/hierarchical-data.png)
+![Content Hierarchy](../static/images/chapter-04/hierarchical-data.png){width=60%}
 
 ### The Schema
 

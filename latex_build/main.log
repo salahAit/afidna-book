@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 01:01
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 01:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -942,11 +942,7 @@ Chapter 1.
 ] [16] [17]
 File: ../static/images/chapter-01/high-level-arch.png Graphic file (type bmp)
 <../static/images/chapter-01/high-level-arch.png>
-
-
-LaTeX Warning: Float too large for page by 29.26753pt on input line 164.
-
-[18] [19] [20]) (./part-1_chapter-02-architecture.tex [21]
+ [18] [19] [20]) (./part-1_chapter-02-architecture.tex [21]
 Chapter 2.
 File: ../static/images/chapter-02/microservices.png Graphic file (type bmp)
 <../static/images/chapter-02/microservices.png>
@@ -963,7 +959,7 @@ File: ../static/images/chapter-02/read-replicas.png Graphic file (type bmp)
 <../static/images/chapter-02/read-replicas.png>
 
 
-LaTeX Warning: Float too large for page by 29.27379pt on input line 279.
+LaTeX Warning: Float too large for page by 27.18445pt on input line 279.
 
 [27] [28] [29]) (./part-1_chapter-03-setup.tex [30]
 Chapter 3.
