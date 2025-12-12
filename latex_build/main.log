@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 00:55
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2025.1.19)  12 DEC 2025 01:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1121,7 +1121,11 @@ uage=dflt;!
 Chapter 17.
 [136
 
-] [137]
+]
+File: ../static/images/chapter-20/r2-file-structure.png Graphic file (type bmp)
+
+<../static/images/chapter-20/r2-file-structure.png>
+ [137]
 Missing character: There is no م (U+0645) in font FreeSans Bold/OT:script=latn;
 language=dflt;mapping=tex-text;!
 Missing character: There is no ؤ (U+0624) in font FreeSans Bold/OT:script=latn;
@@ -1160,10 +1164,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 26238 strings out of 474878
- 521135 string characters out of 5762516
+ 26243 strings out of 474878
+ 521575 string characters out of 5762516
  2755627 words of memory out of 5000000
- 47824 multiletter control sequences out of 15000+600000
+ 47827 multiletter control sequences out of 15000+600000
  563453 words of font info for 104 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  88i,13n,96p,468b,1980s stack positions out of 10000i,1000n,20000p,200000b,200000s

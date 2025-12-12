@@ -196,12 +196,7 @@ We use a **hybrid approach**:
 
 ### 20.3 File Structure
 
-```
-afidna-assets/
-├── videos/{track}/{lesson}/{order}.mp4
-├── pdfs/{track}/{lesson}.pdf
-└── thumbnails/{lesson}.webp
-```
+![Cloudflare R2 File Structure](../static/images/chapter-20/r2-file-structure.png)
 
 ### 20.4 Database Integration
 
